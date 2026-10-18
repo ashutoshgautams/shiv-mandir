@@ -1,0 +1,28 @@
+import Image from "next/image";
+import Link from "next/link";
+import type { Deity } from "@/lib/deities";
+
+export function DeityCard({ d, priority = false }: { d: Deity; priority?: boolean }) {
+  return (
+    <Link
+      href={`/darshan/${d.slug}`}
+      className="group grid bg-card rounded-2xl overflow-hidden border border-line no-underline text-ink hover:border-gold hover:shadow-[0_8px_24px_rgba(35,23,15,0.10)] transition-[border-color,box-shadow]"
+    >
+      <div className="relative aspect-[3/2] overflow-hidden bg-saffron-soft">
+        <Image
+          src={d.image}
+          alt={`${d.name} के दर्शन`}
+          fill
+          priority={priority}
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="p-4 md:p-5 grid gap-0.5 border-t-2 border-gold/60">
+        <span className="eyebrow">{d.role}</span>
+        <span className="font-display text-[1.4rem] leading-snug">{d.name}</span>
+        <span className="text-ink-soft text-[0.95rem]">{d.days}</span>
+      </div>
+    </Link>
+  );
+}

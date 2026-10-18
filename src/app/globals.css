@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/* Light, high-contrast palette for elderly readers: warm paper, near-black ink, sindoor maroon for actions. */
+@theme {
+  --color-paper: #fbf6ec;
+  --color-card: #ffffff;
+  --color-ink: #23170f;
+  --color-ink-soft: #4b392c;
+  --color-line: #e6d6bb;
+  --color-maroon: #8e1b1b;
+  --color-maroon-dark: #6c1111;
+  --color-saffron: #e8850c;
+  --color-saffron-soft: #fdf1df;
+  --color-gold: #b8892e;
+  --color-leaf: #23692f;
+  --color-leaf-soft: #e6f2e5;
+
+  --font-display: var(--font-tiro), "Noto Serif Devanagari", serif;
+  --font-sans: var(--font-mukta), "Noto Sans Devanagari", system-ui, sans-serif;
+
+  --radius-arch: 999px 999px 1.25rem 1.25rem;
+}
+
+/* Base text is 18px; the "अक्षर" control in the header raises it to 20px or 22px. */
+html {
+  font-size: 112.5%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+html[data-size="lg"] { font-size: 125%; }
+html[data-size="xl"] { font-size: 137.5%; }
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-saffron);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection { background: var(--color-saffron-soft); }
+
+@utility wrap {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+
+/* Big, obvious buttons. Minimum 3rem tall (54px+ at base size). */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+  &:active { transform: translateY(1px); }
+}
+@utility btn-primary {
+  background: var(--color-maroon);
+  color: #fff;
+  &:hover { background: var(--color-maroon-dark); }
+}
+@utility btn-outline {
+  background: var(--color-card);
+  color: var(--color-maroon);
+  border: 2px solid var(--color-maroon);
+  &:hover { background: var(--color-saffron-soft); }
+}
+@utility btn-saffron {
+  background: var(--color-saffron);
+  color: #2a1606;
+  &:hover { background: #d47605; }
+}
+
+@utility input {
+  width: 100%;
+  min-height: 3.1rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--color-line);
+  border-radius: 0.7rem;
+  background: var(--color-card);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 1.05rem;
+  &:focus { outline: none; border-color: var(--color-maroon); box-shadow: 0 0 0 3px var(--color-saffron-soft); }
+  &::placeholder { color: #8a7766; }
+}
+
+@utility eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-maroon);
+}
+
+/* Flower offering on the darshan page */
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -10%, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate3d(var(--drift, 0px), var(--fall, 500px), 0) rotate(var(--spin, 360deg)); opacity: 0.95; }
+}
+.petal {
+  position: absolute;
+  top: -4%;
+  width: 1.1rem;
+  height: 0.8rem;
+  border-radius: 60% 10% 60% 10%;
+  animation: petal-fall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes bell-swing {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(16deg); }
+  60% { transform: rotate(-12deg); }
+  85% { transform: rotate(5deg); }
+}
+.bell-swing { animation: bell-swing 0.9s ease-in-out; transform-origin: 50% 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  header, footer, nav, .no-print { display: none !important; }
+  body { background: #fff; }
+}
