@@ -8,7 +8,7 @@ export function DeityCard({ d, priority = false }: { d: Deity; priority?: boolea
       href={`/darshan/${d.slug}`}
       className="group grid bg-card rounded-2xl overflow-hidden border border-line no-underline text-ink hover:border-gold hover:shadow-[0_8px_24px_rgba(35,23,15,0.10)] transition-[border-color,box-shadow]"
     >
-      <div className="relative aspect-[3/2] overflow-hidden bg-saffron-soft">
+      <div className="relative aspect-[4/3] overflow-hidden bg-saffron-soft">
         <Image
           src={d.image}
           alt={`${d.name} के दर्शन`}

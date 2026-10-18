@@ -10,7 +10,7 @@ export type Deity = {
   image: string;
 };
 
-// Photos supplied by the committee (AI-generated representations until real darshan photos are taken).
+// Photos of the mandir's own murtis, supplied by the committee.
 export const DEITIES: Deity[] = [
   {
     slug: "shivling",

@@ -64,7 +64,7 @@ export function DarshanOffering({ image, name }: { image: string; name: string }
 
   return (
     <div className="grid gap-4">
-      <div ref={frame} className="relative aspect-[3/2] rounded-2xl overflow-hidden border-4 border-card ring-1 ring-gold/70 shadow-[0_14px_40px_rgba(35,23,15,0.16)] bg-saffron-soft">
+      <div ref={frame} className="relative aspect-[4/3] rounded-2xl overflow-hidden border-4 border-card ring-1 ring-gold/70 shadow-[0_14px_40px_rgba(35,23,15,0.16)] bg-saffron-soft">
         <Image src={image} alt={`${name} के दर्शन`} fill priority sizes="(min-width: 1024px) 640px, 100vw" className="object-cover" />
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
           {petals.map((p) => (

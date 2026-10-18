@@ -30,7 +30,7 @@ export function SiteFooter() {
         </nav>
         <div className="grid gap-2 content-start text-ink-soft">
           <span className="eyebrow">जानकारी</span>
-          <p className="text-[0.9rem]">यह वेबसाइट का प्रथम प्रारूप है। चित्र प्रतीकात्मक हैं और कुछ जानकारी (समय, संपर्क) समिति द्वारा पुष्टि की जानी है।</p>
+          <p className="text-[0.9rem]">कुछ जानकारी (आरती समय, संपर्क) समिति द्वारा पुष्टि की जानी है।</p>
         </div>
       </div>
     </footer>
