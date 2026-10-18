@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { MANDIR } from "./mandir";
 
-// TODO: set NEXT_PUBLIC_SITE_URL to the real domain once bought (e.g. https://shanteshwarmandir.in).
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://shanteshwarmandir.in").replace(/\/$/, "");
+// Live address. If a custom domain is added later, set NEXT_PUBLIC_SITE_URL in Vercel (or change this).
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://shiv-mandir.vercel.app").replace(/\/$/, "");
 
 // Bump when content changes meaningfully; used by the sitemap.
 export const LAST_UPDATED = "2026-10-18";

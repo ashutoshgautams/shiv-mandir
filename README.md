@@ -32,7 +32,7 @@ All in [`src/lib/mandir.ts`](src/lib/mandir.ts) and [`src/lib/samay.ts`](src/lib
 
 ## SEO and sharing
 
-- Set `NEXT_PUBLIC_SITE_URL` to the real domain (all canonical, sitemap and WhatsApp image URLs use it).
+- Live at https://shiv-mandir.vercel.app (default in `src/lib/site.ts`). If a custom domain is added, set `NEXT_PUBLIC_SITE_URL` in Vercel.
   Optional: `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` for Google Search Console.
 - Share images (1200×630, WhatsApp/Facebook) live in `public/og/`, one per page and per deity.
 - Structured data: `HinduTemple` (address, geo from plus code J3JR+H6H), `WebSite`, breadcrumbs, puja `Service` list, `FAQPage`.
