@@ -196,6 +196,13 @@ export async function updateMember(id: string, patch: Partial<Member>) {
   await put("members", { ...m, ...patch });
 }
 
+export async function addMemberPaid(id: string, amount: number) {
+  const m = await get<Member>("members", id);
+  if (!m) throw new InputError("सदस्य नहीं मिला।");
+  await put("members", { ...m, paid: m.paid + amount, status: "active" });
+  return { ...m, paid: m.paid + amount };
+}
+
 export async function deleteMember(id: string) {
   await remove("members", id);
 }

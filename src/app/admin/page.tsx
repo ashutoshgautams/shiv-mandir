@@ -26,9 +26,9 @@ import {
   changePaymentStatus,
   importMemberCsv,
   logout,
-  saveMember,
 } from "./actions";
-import { ActionForm, DeleteMemberButton, LoginForm } from "./ui";
+import { ActionForm, LoginForm } from "./ui";
+import { MembersTable } from "./MembersTable";
 
 export const metadata: Metadata = { title: "समिति एडमिन", robots: { index: false, follow: false } };
 
@@ -334,7 +334,6 @@ function BookingsTab({ bookings }: { bookings: Booking[] }) {
 function MembersTab({ members, payments, status }: { members: Member[]; payments: Payment[]; status: string }) {
   const fee = members.reduce((a, m) => a + m.fee, 0);
   const paid = members.reduce((a, m) => a + m.paid, 0);
-  const shown = status === "dues" ? members.filter((m) => dues(m) > 0) : status === "applied" ? members.filter((m) => m.status === "applied") : members;
   const memPayments = payments.filter((p) => p.kind === "membership" && p.status !== "awaiting");
 
   return (
@@ -370,32 +369,7 @@ function MembersTab({ members, payments, status }: { members: Member[]; payments
         <a href="/admin/export?type=members" className="ml-auto btn btn-outline min-h-0 py-2">Excel (CSV) डाउनलोड</a>
       </div>
 
-      <ul className="grid gap-2">
-        {shown.map((m) => (
-          <li key={m.id} className={`bg-card rounded-xl border p-3 ${m.status === "applied" ? "border-saffron" : "border-line"}`}>
-            <ActionForm action={saveMember} hidden={{ id: m.id }} className="grid grid-cols-2 md:grid-cols-[2fr_1.3fr_1fr_1fr_1fr_auto] gap-2 items-end">
-              <Field label="नाम" name="name" defaultValue={m.name} small />
-              <Field label="मोबाइल" name="phone" defaultValue={m.phone} small />
-              <Field label="शुल्क ₹" name="fee" type="number" defaultValue={String(m.fee)} small />
-              <Field label="जमा ₹" name="paid" type="number" defaultValue={String(m.paid)} small />
-              <div className="grid gap-1">
-                <span className="text-[0.85rem] font-medium">बकाया</span>
-                <span className={`font-bold tabular-nums py-2 ${dues(m) ? "text-maroon" : "text-leaf"}`}>{dues(m) ? rupees(dues(m)) : "—"}</span>
-              </div>
-              <div className="flex gap-2 items-center col-span-2 md:col-span-1">
-                <select name="status" defaultValue={m.status} aria-label="स्थिति" className="input min-h-10 py-1 text-[0.95rem]">
-                  <option value="active">सक्रिय</option>
-                  <option value="applied">आवेदन</option>
-                </select>
-                <button className="btn btn-primary min-h-10 py-1.5 px-4">सहेजें</button>
-              </div>
-            </ActionForm>
-            <div className="flex justify-end mt-1">
-              <DeleteMemberButton id={m.id} name={m.name} />
-            </div>
-          </li>
-        ))}
-      </ul>
+      <MembersTable members={members} initialFilter={status} />
 
       <div className="grid md:grid-cols-2 gap-4">
         <details className="bg-card rounded-2xl border border-line">

@@ -7,6 +7,7 @@ import {
   cleanPhone,
   cleanText,
   createMember,
+  addMemberPaid,
   createPayment,
   deleteMember,
   importMembers,
@@ -138,5 +139,12 @@ export async function removeMember(_: ActionState, form: FormData) {
   return run(async () => {
     await deleteMember(String(form.get("id")));
     return "सदस्य हटा दिए गए";
+  });
+}
+
+export async function recordMemberPayment(_: ActionState, form: FormData) {
+  return run(async () => {
+    const m = await addMemberPaid(String(form.get("id")), requireAmount(form.get("amount")));
+    return `${m.name}: ₹${requireAmount(form.get("amount")).toLocaleString("en-IN")} जमा जुड़ गया`;
   });
 }
