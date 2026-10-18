@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { login, type ActionState } from "./actions";
+import { login, removeMember, type ActionState } from "./actions";
 
 type Action = (state: ActionState, form: FormData) => Promise<ActionState>;
 
@@ -40,6 +40,24 @@ export function ActionForm({
       </fieldset>
       {state?.error && <p role="alert" className="text-maroon font-semibold text-[0.95rem] w-full">{state.error}</p>}
       {state?.ok && <p role="status" className="text-leaf font-semibold text-[0.95rem] w-full">{state.ok}</p>}
+    </form>
+  );
+}
+
+export function DeleteMemberButton({ id, name }: { id: string; name: string }) {
+  const [state, action, pending] = useActionState(removeMember, null);
+  return (
+    <form
+      action={action}
+      onSubmit={(e) => {
+        if (!window.confirm(`${name} को सदस्य सूची से हटाएँ?`)) e.preventDefault();
+      }}
+    >
+      <input type="hidden" name="id" value={id} />
+      <button disabled={pending} className="text-maroon underline text-[0.9rem] disabled:opacity-50">
+        {pending ? "हटा रहे हैं…" : "हटाएँ"}
+      </button>
+      {state?.error && <span role="alert" className="text-maroon text-[0.85rem] ml-2">{state.error}</span>}
     </form>
   );
 }

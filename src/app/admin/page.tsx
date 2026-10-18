@@ -28,7 +28,7 @@ import {
   logout,
   saveMember,
 } from "./actions";
-import { ActionForm, LoginForm } from "./ui";
+import { ActionForm, DeleteMemberButton, LoginForm } from "./ui";
 
 export const metadata: Metadata = { title: "समिति एडमिन", robots: { index: false, follow: false } };
 
@@ -390,6 +390,9 @@ function MembersTab({ members, payments, status }: { members: Member[]; payments
                 <button className="btn btn-primary min-h-10 py-1.5 px-4">सहेजें</button>
               </div>
             </ActionForm>
+            <div className="flex justify-end mt-1">
+              <DeleteMemberButton id={m.id} name={m.name} />
+            </div>
           </li>
         ))}
       </ul>

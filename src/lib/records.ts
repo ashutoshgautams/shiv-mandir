@@ -1,5 +1,5 @@
 import "server-only";
-import { all, get, nextSeq, put, putMany } from "./store";
+import { all, get, nextSeq, put, putMany, remove } from "./store";
 import { MEMBERSHIP } from "./mandir";
 
 // ── Types ────────────────────────────────────────────────────────
@@ -194,6 +194,10 @@ export async function updateMember(id: string, patch: Partial<Member>) {
   const m = await get<Member>("members", id);
   if (!m) throw new InputError("सदस्य नहीं मिला।");
   await put("members", { ...m, ...patch });
+}
+
+export async function deleteMember(id: string) {
+  await remove("members", id);
 }
 
 // CSV with header: name,mobile,fee,paid (extra columns ignored). Imported members are active.

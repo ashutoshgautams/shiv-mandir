@@ -8,6 +8,7 @@ import {
   cleanText,
   createMember,
   createPayment,
+  deleteMember,
   importMembers,
   requireAmount,
   requireName,
@@ -130,5 +131,12 @@ export async function importMemberCsv(_: ActionState, form: FormData) {
     if (!csv.trim()) throw new InputError("CSV फ़ाइल चुनें या टेक्स्ट चिपकाएँ।");
     const n = await importMembers(csv);
     return `${n} सदस्य आयात हुए`;
+  });
+}
+
+export async function removeMember(_: ActionState, form: FormData) {
+  return run(async () => {
+    await deleteMember(String(form.get("id")));
+    return "सदस्य हटा दिए गए";
   });
 }

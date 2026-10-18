@@ -62,7 +62,17 @@ function restBackend(url: string, token: string): Backend {
   // We store JSON strings ourselves so data looks the same whichever client wrote it.
   const r = new Redis({ url, token, automaticDeserialization: false });
   return {
-    hgetall: async (k) => ((await r.hgetall<Record<string, string>>(k)) ?? {}),
+    // With automaticDeserialization off, HGETALL comes back as a flat [field, value, field, value…] array.
+    hgetall: async (k) => {
+      const raw = (await r.hgetall(k)) as unknown;
+      if (!raw) return {};
+      if (Array.isArray(raw)) {
+        const out: Record<string, string> = {};
+        for (let i = 0; i + 1 < raw.length; i += 2) out[String(raw[i])] = String(raw[i + 1]);
+        return out;
+      }
+      return raw as Record<string, string>;
+    },
     hget: async (k, f) => (await r.hget<string>(k, f)) ?? null,
     hset: async (k, v) => void (await r.hset(k, v)),
     hdel: async (k, f) => void (await r.hdel(k, f)),
@@ -104,6 +114,20 @@ const backend: Backend | null =
 
 const parse = <T>(v: unknown): T => (typeof v === "string" ? JSON.parse(v) : (v as T));
 
+// One unreadable record should never take down a whole page.
+function parseAll<T>(values: unknown[]): T[] {
+  const out: T[] = [];
+  for (const v of values) {
+    try {
+      const rec = parse<T>(v);
+      if (rec && typeof rec === "object") out.push(rec);
+    } catch {
+      console.error("store: skipped unreadable record");
+    }
+  }
+  return out;
+}
+
 // ── File fallback (local development) ────────────────────────────
 const DIR = path.join(process.cwd(), "data");
 async function readJson<T>(name: string, fallback: T): Promise<T> {
@@ -125,7 +149,7 @@ function ensure() {
 // ── Public API ───────────────────────────────────────────────────
 export async function all<T>(col: Collection): Promise<T[]> {
   ensure();
-  if (backend) return Object.values(await backend.hgetall(PREFIX + col)).map((v) => parse<T>(v));
+  if (backend) return parseAll<T>(Object.values(await backend.hgetall(PREFIX + col)));
   return Object.values(await readJson<Record<string, T>>(col, {}));
 }
 
