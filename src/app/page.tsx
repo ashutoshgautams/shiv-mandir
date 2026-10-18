@@ -73,9 +73,15 @@ export default function Home() {
 
       {ABHIYAN.active && (
         <section className="wrap mt-14" aria-labelledby="abhiyan-title">
-          <div className="grid md:grid-cols-[1fr_1.1fr] rounded-2xl overflow-hidden border-2 border-gold/60 bg-card shadow-[0_12px_32px_rgba(142,27,27,0.10)]">
-            <div className="relative min-h-[15rem]">
-              <Image src="/images/deities/durga.jpg" alt="माँ दुर्गा" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover object-top" />
+          <div className="grid md:grid-cols-[1.3fr_1fr] rounded-2xl overflow-hidden border-2 border-gold/60 bg-card shadow-[0_12px_32px_rgba(142,27,27,0.10)]">
+            <div className="relative aspect-[8/5] md:aspect-auto md:min-h-[22rem]">
+              <Image
+                src="/images/durga-puja-2026.jpg"
+                alt="दुर्गा पूजा 2026: माँ दुर्गा, गणेश जी, लक्ष्मी जी, सरस्वती जी, कार्तिकेय जी और महिषासुर की प्रतिमा"
+                fill
+                sizes="(min-width: 768px) 58vw, 100vw"
+                className="object-cover object-center"
+              />
             </div>
             <div className="p-6 md:p-9 grid gap-4 content-center bg-[linear-gradient(135deg,#fff,#fdf1df)]">
               <span className="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-maroon text-white text-[0.9rem] font-semibold">
