@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { adminConfigured, isAdmin } from "@/lib/auth";
-import { storeMode } from "@/lib/store";
+import { storeDiagnostics, storeMode } from "@/lib/store";
 import { ABHIYAN, MANDIR, MEMBERSHIP } from "@/lib/mandir";
 import { rupees } from "@/lib/contact";
 import { SITE_URL } from "@/lib/site";
@@ -70,7 +70,10 @@ async function Admin({ searchParams }: { searchParams: PageProps<"/admin">["sear
   if (storeMode === "none") {
     return (
       <Panel title="डेटाबेस जुड़ा नहीं है">
-        <p>Vercel → Storage → <strong>Upstash for Redis</strong> बनाकर इस प्रोजेक्ट से जोड़ें, फिर दोबारा deploy करें। तब तक चंदा और बुकिंग सहेजे नहीं जा सकते।</p>
+        <p>Vercel → Storage → <strong>Upstash for Redis</strong> बनाकर इस प्रोजेक्ट से जोड़ें (Production चुनें), फिर दोबारा deploy करें। तब तक चंदा और बुकिंग सहेजे नहीं जा सकते।</p>
+        <p className="text-ink-soft text-[0.95rem]">
+          मिले हुए वेरिएबल: {storeDiagnostics().seen.join(", ") || "कोई नहीं"}
+        </p>
       </Panel>
     );
   }
