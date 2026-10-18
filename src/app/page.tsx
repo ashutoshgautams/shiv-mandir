@@ -72,6 +72,20 @@ export default function Home() {
         </p>
       </section>
 
+      {/* Membership invite */}
+      <section className="wrap mt-12" aria-labelledby="sadasya-title">
+        <div className="rounded-2xl border-2 border-gold/50 bg-[linear-gradient(135deg,#fff,#fdf1df)] p-7 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+          <div className="grid gap-2 max-w-[60ch]">
+            <span className="eyebrow">मंदिर परिवार</span>
+            <h2 id="sadasya-title" className="text-[1.9rem] md:text-[2.2rem]">सहयोग भाव से आइए, सदस्य बनिए</h2>
+            <p className="text-ink-soft text-[1.08rem]">
+              मंदिर की नित्य पूजा, पर्व और रख-रखाव सदस्यों के सहयोग से चलता है। वार्षिक सहयोग {rupees(MEMBERSHIP.fee)}।
+            </p>
+          </div>
+          <Link href="/sadasya" className="btn btn-primary min-h-14 text-[1.1rem]">सदस्य बनें <ArrowRight /></Link>
+        </div>
+      </section>
+
       {ABHIYAN.active && (
         <section className="wrap mt-14" aria-labelledby="abhiyan-title">
           <div className="grid md:grid-cols-[1.3fr_1fr] rounded-2xl overflow-hidden border-2 border-gold/60 bg-card shadow-[0_12px_32px_rgba(142,27,27,0.10)]">
@@ -130,20 +144,6 @@ export default function Home() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* Membership invite */}
-      <section className="wrap mt-16" aria-labelledby="sadasya-title">
-        <div className="rounded-2xl border-2 border-gold/50 bg-[linear-gradient(135deg,#fff,#fdf1df)] p-7 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center">
-          <div className="grid gap-2 max-w-[60ch]">
-            <span className="eyebrow">मंदिर परिवार</span>
-            <h2 id="sadasya-title" className="text-[1.9rem] md:text-[2.2rem]">सहयोग भाव से आइए, सदस्य बनिए</h2>
-            <p className="text-ink-soft text-[1.08rem]">
-              मंदिर की नित्य पूजा, पर्व और रख-रखाव सदस्यों के सहयोग से चलता है। वार्षिक सहयोग {rupees(MEMBERSHIP.fee)}।
-            </p>
-          </div>
-          <Link href="/sadasya" className="btn btn-primary min-h-14 text-[1.1rem]">सदस्य बनें <ArrowRight /></Link>
         </div>
       </section>
 
