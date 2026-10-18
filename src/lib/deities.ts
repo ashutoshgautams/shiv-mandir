@@ -1,3 +1,5 @@
+import { ABHIYAN } from "./mandir";
+
 export type Deity = {
   slug: string;
   name: string;
@@ -7,11 +9,30 @@ export type Deity = {
   about: string;
   days: string;
   offerings: string;
-  image: string;
+  image: string; // 4:3 crop used on cards
+  detail?: { src: string; width: number; height: number }; // full photo for the darshan page, if different
+  festival?: boolean;
+};
+
+
+const DURGA_PUJA: Deity = {
+  slug: "durga-puja-2026",
+  name: "दुर्गा पूजा 2026",
+  short: "दुर्गा पूजा 2026",
+  role: "शारदीय नवरात्रि · पंडाल दर्शन",
+  mantra: "या देवी सर्वभूतेषु शक्तिरूपेण संस्थिता",
+  about:
+    "मंदिर परिसर के पंडाल में माँ दुर्गा महिषासुरमर्दिनी रूप में विराजमान हैं, साथ में गणेश जी, लक्ष्मी जी, सरस्वती जी और कार्तिकेय जी। नवरात्रि भर पूजा, आरती और प्रसाद वितरण होता है।",
+  days: "शारदीय नवरात्रि से विजयादशमी तक",
+  offerings: "लाल चुनरी, नारियल, फल, मिठाई",
+  image: "/images/deities/durga-puja-2026.jpg",
+  detail: { src: "/images/durga-puja-2026.jpg", width: 1596, height: 986 },
+  festival: true,
 };
 
 // Photos of the mandir's own murtis, supplied by the committee.
 export const DEITIES: Deity[] = [
+  ...(ABHIYAN.active ? [DURGA_PUJA] : []),
   {
     slug: "shivling",
     name: "श्री शान्तेश्वर महादेव",
@@ -49,16 +70,17 @@ export const DEITIES: Deity[] = [
     image: "/images/deities/hanuman.jpg",
   },
   {
-    slug: "radha-krishna",
-    name: "श्री राधे-कृष्ण",
-    short: "राधे-कृष्ण",
-    role: "युगल सरकार",
-    mantra: "हरे कृष्ण हरे कृष्ण, कृष्ण कृष्ण हरे हरे",
+    slug: "lakshmi-narayan",
+    name: "श्री लक्ष्मी-नारायण",
+    short: "लक्ष्मी-नारायण",
+    role: "श्री हरि एवं माँ लक्ष्मी · बाल गोपाल सहित",
+    mantra: "ॐ नमो भगवते वासुदेवाय",
     about:
-      "प्रेम और भक्ति के युगल स्वरूप। जन्माष्टमी की रात्रि को बाल-गोपाल का विशेष श्रृंगार और झूलन होता है।",
-    days: "जन्माष्टमी, एकादशी",
-    offerings: "तुलसी दल, माखन-मिश्री",
-    image: "/images/deities/radha-krishna.jpg",
+      "भगवान विष्णु और माँ लक्ष्मी युगल रूप में विराजमान हैं, और उनके चरणों में सिंहासन पर बाल रूप में श्रीकृष्ण (बाल गोपाल)। गुरुवार, एकादशी और जन्माष्टमी पर विशेष पूजा होती है।",
+    days: "गुरुवार, एकादशी, जन्माष्टमी",
+    offerings: "तुलसी दल, पीले फूल, पंचामृत, माखन-मिश्री",
+    image: "/images/deities/lakshmi-narayan.jpg",
+    detail: { src: "/images/deities/lakshmi-narayan-full.jpg", width: 900, height: 1329 },
   },
   {
     slug: "suryadev",
@@ -89,4 +111,4 @@ export const DEITIES: Deity[] = [
 export const getDeity = (slug: string) => DEITIES.find((d) => d.slug === slug);
 
 // Day of week (0 = Sunday) → deity traditionally worshipped that day.
-export const DAY_DEITY: Record<number, string> = { 0: "suryadev", 1: "shivling", 2: "hanuman", 5: "durga", 6: "hanuman" };
+export const DAY_DEITY: Record<number, string> = { 0: "suryadev", 1: "shivling", 2: "hanuman", 4: "lakshmi-narayan", 5: "durga", 6: "hanuman" };

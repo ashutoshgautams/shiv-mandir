@@ -38,10 +38,23 @@ All in [`src/lib/mandir.ts`](src/lib/mandir.ts) and [`src/lib/samay.ts`](src/lib
 - Structured data: `HinduTemple` (address, geo from plus code J3JR+H6H), `WebSite`, breadcrumbs, puja `Service` list, `FAQPage`.
 - `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest` are generated from `src/app/`.
 
-## Chanda records
+## Admin, chanda, bookings and membership
 
-`/api/chanda` stores entries in `data/chanda.json` (git-ignored). This is fine on a single server running `npm start`,
-but on Vercel or other serverless hosting the file is not persistent — move to a database (Supabase, Postgres, or a Google Sheet)
-before launch. Each entry is saved as `pending`; the treasurer should match UTR numbers against the bank statement.
+- `/admin` — committee dashboard: Durga Puja 2026 and general chanda (separately), puja bookings, members with dues,
+  CSV export, offline/cash entry, member CSV import. Not indexed by search engines.
+- `/chanda`, `/sadasya` — donor/member creates a receipt, pays by UPI (`9334555817@ibl`), enters UTR.
+  Receipt page `/rasid/<id>` shows **भुगतान बाकी → पुष्टि लंबित → पुष्ट / भुगतान नहीं मिला** live; donor can
+  WhatsApp a screenshot, committee confirms in `/admin` and can WhatsApp the donor back.
+- Public totals and the public member list count only committee-confirmed entries. Dues are visible only in `/admin`.
+
+### Setup on Vercel (one time)
+
+1. **Storage → Create → Upstash for Redis** (free), connect it to this project. It adds
+   `KV_REST_API_URL` / `KV_REST_API_TOKEN` (or `UPSTASH_REDIS_REST_*`) automatically.
+2. **Settings → Environment Variables → `ADMIN_PASSWORD`** = a strong committee password.
+3. Redeploy. Log in at `/admin`, open **सदस्य → सदस्य सूची आयात करें**, upload `data/member-list-2026.csv`
+   (generated locally from the committee's Excel sheet; kept out of git).
+
+Locally without Redis, records are written to `data/*.json`.
 
 Earlier single-file HTML draft is kept in `_draft-v1/`.

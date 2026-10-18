@@ -10,14 +10,14 @@ export const MANDIR = {
     "https://www.google.com/maps/search/?api=1&query=Sri+Sri+Shanteshwar+Shiv+Mandir+J3JR%2BH6H+Rajeev+Nagar+Patna",
   mapsEmbedUrl: "https://www.google.com/maps?q=Sri+Sri+Shanteshwar+Shiv+Mandir,+J3JR%2BH6H,+Rajeev+Nagar,+Patna&output=embed",
 
-  // TODO: committee to provide real numbers. Digits only, with country code, for WhatsApp/tel links.
-  phone: "",
-  phoneDisplay: "+91 XXXXX XXXXX",
-  whatsapp: "",
+  // Puja bookings + general contact. Digits with country code for tel:/wa.me links.
+  phone: "919939696698",
+  phoneDisplay: "+91 99396 96698",
+  whatsapp: "919939696698",
 
-  // TODO: committee's UPI ID and the exact name registered with the bank.
-  upiId: "",
-  upiPayee: "Shanteshwar Shivlok Mandir Samiti",
+  // All chanda, daan and membership payments go to this UPI ID.
+  upiId: "9334555817@ibl",
+  upiPayee: "Shanteshwar Shivlok Mandir",
 };
 
 export const isPlaceholder = {
@@ -35,4 +35,9 @@ export const ABHIYAN = {
   appeal:
     "माँ दुर्गा की पूजा, पंडाल, प्रसाद और विसर्जन के लिए मोहल्ले के सभी श्रद्धालुओं से सहयोग का निवेदन है।",
   goal: 251000, // TODO: confirm with committee
+};
+
+export const MEMBERSHIP = {
+  fee: 3100,
+  year: "2026-27",
 };

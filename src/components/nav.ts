@@ -3,6 +3,7 @@ export const NAV = [
   { href: "/darshan", label: "दर्शन", short: "दर्शन" },
   { href: "/puja", label: "पूजा-पाठ", short: "पूजा" },
   { href: "/chanda", label: "चंदा / दान", short: "चंदा" },
+  { href: "/sadasya", label: "सदस्यता", short: "सदस्य" },
   { href: "/sampark", label: "समय एवं संपर्क", short: "संपर्क" },
 ] as const;
 

@@ -1,13 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { NAV, isActive } from "./nav";
 
+// The active tab needs the URL, which must sit inside Suspense under Cache Components.
 export function NavLinks() {
-  const pathname = usePathname();
   return (
-    <nav aria-label="मुख्य मेनू" className="hidden md:flex ml-auto gap-1">
+    <Suspense fallback={<Links pathname="" />}>
+      <ActiveLinks />
+    </Suspense>
+  );
+}
+
+function ActiveLinks() {
+  return <Links pathname={usePathname()} />;
+}
+
+function Links({ pathname }: { pathname: string }) {
+  return (
+    <nav aria-label="मुख्य मेनू" className="hidden lg:flex ml-auto gap-1">
       {NAV.map((n) => {
         const active = isActive(pathname, n.href);
         return (

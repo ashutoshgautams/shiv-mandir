@@ -27,6 +27,21 @@ export const KEYWORDS = [
   "rudrabhishek Patna",
   "Durga Puja Rajeev Nagar Patna",
   "temple near Road No 24 Rajeev Nagar",
+  "मंदिर रोड नं. 24",
+  "रोड नं. 24 मंदिर",
+  "रोड नंबर 24 शिव मंदिर",
+  "राजीव नगर का मंदिर",
+  "राजीव नगर शिव मंदिर पटना",
+  "शान्तेश्वर शिवलोक मंदिर रोड 24",
+  "Mandir Road No 24",
+  "Road No 24 Mandir Patna",
+  "Road No 24 Rajeev Nagar Mandir",
+  "Shanteshwar Shivlok Mandir Road 24",
+  "Shanteswar Shiv Lok Mandir",
+  "Rajeev Nagar Mandir",
+  "Rajiv Nagar Mandir Patna",
+  "Rajeev Nagar Shiv Mandir",
+  "Durga Puja 2026 Rajeev Nagar",
 ];
 
 export const ALT_NAMES = [
@@ -35,6 +50,10 @@ export const ALT_NAMES = [
   "Shiv Mandir Road No. 24, Rajeev Nagar",
   "श्री श्री शान्तेश्वर शिव मंदिर",
   "शिव मंदिर, रोड नं. 24, राजीव नगर",
+  "Mandir Road No. 24, Rajeev Nagar",
+  "Rajeev Nagar Shiv Mandir",
+  "Shanteshwar Shivlok Mandir, Road 24",
+  "राजीव नगर शिव मंदिर",
 ];
 
 type PageMetaInput = { title: string; description: string; path: string; image: string; imageAlt: string; absoluteTitle?: boolean };

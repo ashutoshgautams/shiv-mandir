@@ -29,7 +29,7 @@ export function PujaBrowser() {
 
   return (
     <>
-      <div className="sticky top-[4.5rem] z-30 bg-paper/95 backdrop-blur border-b border-line">
+      <div className="sticky top-0 md:top-[4.5rem] z-30 bg-paper/95 backdrop-blur border-b border-line">
         <div className="wrap py-3 grid gap-3">
           <label className="relative block max-w-xl">
             <span className="sr-only">पूजा खोजें</span>
@@ -124,21 +124,34 @@ function BookingDialog({
   const [form, setForm] = useState({ name: "", phone: "", date: "", option: "", note: "" });
   const [error, setError] = useState("");
   const [ready, setReady] = useState<string | null>(null);
+  const [bookingRef, setBookingRef] = useState<string | null>(null);
 
   const close = () => {
     ref.current?.close();
   };
 
-  const submit = (e: React.FormEvent) => {
+  const [saving, setSaving] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) return setError("कृपया अपना नाम लिखें।");
     if (form.phone.replace(/\D/g, "").length < 10) return setError("कृपया 10 अंकों का मोबाइल नंबर लिखें।");
     setError("");
+    setSaving(true);
+    // Save the booking for the committee's register; WhatsApp still works if saving fails.
+    const res = await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ puja: puja?.name, ...form }),
+    }).catch(() => null);
+    const ref: string | null = res?.ok ? (await res.json()).ref : null;
+    setSaving(false);
     const date = form.date
       ? new Intl.DateTimeFormat("hi-IN", { day: "numeric", month: "long", year: "numeric" }).format(new Date(form.date))
       : "तिथि बाद में तय करेंगे";
     const text = [
       `जय भोलेनाथ।`,
+      ref && `बुकिंग संख्या: ${ref}`,
       `पूजा: ${puja?.name}${form.option ? ` (${form.option})` : ""}`,
       `नाम: ${form.name}`,
       `मोबाइल: ${form.phone}`,
@@ -149,6 +162,7 @@ function BookingDialog({
       .filter(Boolean)
       .join("\n");
     setReady(text);
+    setBookingRef(ref);
   };
 
   const wa = ready ? whatsappHref(ready) : null;
@@ -158,6 +172,7 @@ function BookingDialog({
       ref={ref}
       onClose={() => {
         setReady(null);
+        setBookingRef(null);
         setError("");
         onClose();
       }}
@@ -205,11 +220,17 @@ function BookingDialog({
               <textarea id="bk-note" rows={2} value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="input py-3" />
             </Field>
             {error && <p role="alert" className="text-maroon font-semibold">{error}</p>}
-            <button type="submit" className="btn btn-primary w-full">आगे बढ़ें</button>
+            <button type="submit" disabled={saving} className="btn btn-primary w-full disabled:opacity-60">{saving ? "दर्ज हो रही है…" : "बुकिंग दर्ज करें"}</button>
           </form>
         ) : (
           <div className="grid gap-4">
-            <p className="text-[1.05rem]">आपका संदेश तैयार है। इसे मंदिर कार्यालय को WhatsApp पर भेजें या सीधे फ़ोन करें।</p>
+            {bookingRef ? (
+              <p className="text-[1.05rem] bg-leaf-soft border border-leaf/30 rounded-xl p-3">
+                आपकी बुकिंग दर्ज हो गई, संख्या <strong>{bookingRef}</strong>। पुष्टि के लिए यह संदेश WhatsApp पर भेजें।
+              </p>
+            ) : (
+              <p className="text-[1.05rem]">आपका संदेश तैयार है। इसे मंदिर कार्यालय को WhatsApp पर भेजें या सीधे फ़ोन करें।</p>
+            )}
             <pre className="whitespace-pre-wrap font-sans bg-paper border border-line rounded-xl p-4 text-[1rem]">{ready}</pre>
             {wa ? (
               <a href={wa} target="_blank" rel="noopener" className="btn btn-primary w-full">

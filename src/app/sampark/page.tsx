@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { MANDIR, isPlaceholder } from "@/lib/mandir";
+import { MANDIR } from "@/lib/mandir";
 import { telHref, whatsappHref } from "@/lib/contact";
 import { PageHeading, SectionTitle } from "@/components/PageHeading";
 import { SamayTable } from "@/components/SamayTable";
 import { CopyAddress } from "@/components/CopyAddress";
+import { UpiScanner } from "@/components/UpiScanner";
 import { PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbs, faqSchema } from "@/lib/schema";
@@ -45,7 +46,7 @@ export default function SamparkPage() {
             <div className="bg-card rounded-2xl border border-line p-6 grid gap-3">
               <span className="eyebrow">मंदिर कार्यालय</span>
               <p className="text-[1.5rem] font-semibold tabular-nums">{MANDIR.phoneDisplay}</p>
-              {isPlaceholder.phone && <p className="text-ink-soft text-[0.95rem]">फ़ोन नंबर समिति द्वारा जोड़ा जाएगा।</p>}
+              <p className="text-ink-soft text-[0.95rem]">पूजा बुकिंग और सामान्य जानकारी के लिए</p>
               <div className="grid sm:grid-cols-2 gap-3">
                 {telHref ? (
                   <a href={telHref} className="btn btn-primary"><PhoneIcon /> फ़ोन करें</a>
@@ -59,6 +60,7 @@ export default function SamparkPage() {
                 )}
               </div>
             </div>
+            <UpiScanner title="दान / चंदा के लिए UPI स्कैनर" />
           </div>
           <div className="rounded-2xl overflow-hidden border border-line bg-card aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[28rem]">
             <iframe

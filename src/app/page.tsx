@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ABHIYAN, MANDIR } from "@/lib/mandir";
+import { ABHIYAN, MANDIR, MEMBERSHIP } from "@/lib/mandir";
+import { rupees } from "@/lib/contact";
 import { DEITIES } from "@/lib/deities";
 import { CATEGORIES, PUJAS } from "@/lib/puja";
 import { PARV } from "@/lib/samay";
@@ -66,8 +67,8 @@ export default function Home() {
       <section className="wrap mt-12" aria-label="मंदिर का परिचय">
         <p className="max-w-[68ch] text-[1.12rem] leading-relaxed">
           <strong className="font-semibold">{MANDIR.name}</strong> पटना के राजीव नगर में <strong className="font-semibold">रोड नं. 24</strong> पर स्थित शिव मंदिर है।
-          मोहल्ले में इसे “रोड नं. 24 वाला शिव मंदिर” के नाम से जाना जाता है। प्रधान देव श्री शान्तेश्वर महादेव के साथ यहाँ माँ दुर्गा, हनुमान जी,
-          राधे-कृष्ण, सूर्यदेव और सप्त पिंडी विराजमान हैं। रुद्राभिषेक, सत्यनारायण पूजा, सुन्दरकाण्ड, मुण्डन और सभी संस्कार मंदिर के आचार्य कराते हैं।
+          मोहल्ले में इसे “रोड नं. 24 वाला शिव मंदिर” या “राजीव नगर का शिव मंदिर” के नाम से जाना जाता है। प्रधान देव श्री शान्तेश्वर महादेव के साथ यहाँ माँ दुर्गा, हनुमान जी,
+          लक्ष्मी-नारायण (बाल गोपाल सहित), सूर्यदेव और सप्त पिंडी विराजमान हैं। रुद्राभिषेक, सत्यनारायण पूजा, सुन्दरकाण्ड, मुण्डन और सभी संस्कार मंदिर के पुरोहित कराते हैं।
         </p>
       </section>
 
@@ -95,7 +96,7 @@ export default function Home() {
                 <Link href="/chanda" className="btn btn-primary">
                   ऑनलाइन चंदा दें <ArrowRight />
                 </Link>
-                <Link href="/darshan/durga" className="btn btn-outline">माँ के दर्शन</Link>
+                <Link href="/darshan/durga-puja-2026" className="btn btn-outline">पंडाल के दर्शन</Link>
               </div>
             </div>
           </div>
@@ -106,7 +107,7 @@ export default function Home() {
       <section className="wrap mt-16" aria-labelledby="darshan-title">
         <SectionTitle id="darshan-title" eyebrow="गर्भगृह" title="देवी-देवताओं के दर्शन" lead="किसी भी देवता पर दबाएँ, बड़ा चित्र, मंत्र और जानकारी खुलेगी।" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {DEITIES.map((d, i) => (
+          {DEITIES.filter((d) => !d.festival).map((d, i) => (
             <DeityCard key={d.slug} d={d} priority={i < 3} />
           ))}
         </div>
@@ -129,6 +130,20 @@ export default function Home() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Membership invite */}
+      <section className="wrap mt-16" aria-labelledby="sadasya-title">
+        <div className="rounded-2xl border-2 border-gold/50 bg-[linear-gradient(135deg,#fff,#fdf1df)] p-7 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+          <div className="grid gap-2 max-w-[60ch]">
+            <span className="eyebrow">मंदिर परिवार</span>
+            <h2 id="sadasya-title" className="text-[1.9rem] md:text-[2.2rem]">सहयोग भाव से आइए, सदस्य बनिए</h2>
+            <p className="text-ink-soft text-[1.08rem]">
+              मंदिर की नित्य पूजा, पर्व और रख-रखाव सदस्यों के सहयोग से चलता है। वार्षिक सहयोग {rupees(MEMBERSHIP.fee)}।
+            </p>
+          </div>
+          <Link href="/sadasya" className="btn btn-primary min-h-14 text-[1.1rem]">सदस्य बनें <ArrowRight /></Link>
         </div>
       </section>
 
@@ -174,6 +189,10 @@ export default function Home() {
             <h2 id="visit-title" className="text-[1.9rem]">मंदिर कैसे पहुँचें</h2>
             <p className="text-[1.1rem] text-white/90">{MANDIR.addressPlain}</p>
             <p className="text-white/80">Google Maps प्लस कोड: {MANDIR.plusCode}</p>
+            <p lang="en" className="text-white/80 text-[0.95rem] max-w-[60ch]">
+              Sri Sri Shanteshwar Shivlok Mandir is the Shiv Mandir on Road No. 24, Rajeev Nagar, Patna 800024, known locally as the
+              Road No. 24 mandir. Open daily for darshan, aarti, rudrabhishek and puja bookings.
+            </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <a href={MANDIR.mapsUrl} target="_blank" rel="noopener" className="btn bg-white text-maroon hover:bg-saffron-soft">

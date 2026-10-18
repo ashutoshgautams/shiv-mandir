@@ -30,7 +30,8 @@ function ringBell(ctxRef: React.RefObject<AudioContext | null>) {
   } catch {}
 }
 
-export function DarshanOffering({ image, name }: { image: string; name: string }) {
+export function DarshanOffering({ image, name, ratio }: { image: string; name: string; ratio?: { width: number; height: number } }) {
+  const portrait = ratio ? ratio.height > ratio.width : false;
   const [petals, setPetals] = useState<{ id: number; style: React.CSSProperties }[]>([]);
   const [message, setMessage] = useState("");
   const [swing, setSwing] = useState(0);
@@ -64,7 +65,11 @@ export function DarshanOffering({ image, name }: { image: string; name: string }
 
   return (
     <div className="grid gap-4">
-      <div ref={frame} className="relative aspect-[4/3] rounded-2xl overflow-hidden border-4 border-card ring-1 ring-gold/70 shadow-[0_14px_40px_rgba(35,23,15,0.16)] bg-saffron-soft">
+      <div
+        ref={frame}
+        style={{ aspectRatio: ratio ? `${ratio.width} / ${ratio.height}` : "4 / 3" }}
+        className={`relative w-full rounded-2xl overflow-hidden border-4 border-card ring-1 ring-gold/70 shadow-[0_14px_40px_rgba(35,23,15,0.16)] bg-saffron-soft ${portrait ? "max-w-[30rem] justify-self-center" : ""}`}
+      >
         <Image src={image} alt={`${name} के दर्शन`} fill priority sizes="(min-width: 1024px) 640px, 100vw" className="object-cover" />
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
           {petals.map((p) => (

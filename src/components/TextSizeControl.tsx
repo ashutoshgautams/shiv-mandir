@@ -32,7 +32,7 @@ export function TextSizeControl() {
   const size = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
-    <div role="group" aria-label="अक्षर का आकार" className="ml-auto md:ml-2 flex items-center rounded-lg border border-line bg-paper p-0.5 shrink-0">
+    <div role="group" aria-label="अक्षर का आकार" className="ml-auto lg:ml-2 flex items-center rounded-lg border border-line bg-paper p-0.5 shrink-0">
       {SIZES.map((s) => (
         <button
           key={s.id}

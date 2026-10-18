@@ -43,7 +43,7 @@ export default async function DeityPage(props: PageProps<"/darshan/[slug]">) {
       </Link>
 
       <div className="grid lg:grid-cols-[1.25fr_1fr] gap-8 lg:gap-12 items-start">
-        <DarshanOffering image={d.image} name={d.name} />
+        <DarshanOffering image={d.detail?.src ?? d.image} ratio={d.detail} name={d.name} />
 
         <div className="grid gap-5">
           <div className="grid gap-1">
@@ -64,7 +64,11 @@ export default async function DeityPage(props: PageProps<"/darshan/[slug]">) {
               <dd className="font-semibold text-[1.08rem]">{d.offerings}</dd>
             </div>
           </dl>
-          <Link href="/puja" className="btn btn-outline w-full sm:w-fit">इनकी पूजा बुक करें</Link>
+          {d.festival ? (
+            <Link href="/chanda" className="btn btn-primary w-full sm:w-fit">दुर्गा पूजा के लिए चंदा दें</Link>
+          ) : (
+            <Link href="/puja" className="btn btn-outline w-full sm:w-fit">इनकी पूजा बुक करें</Link>
+          )}
         </div>
       </div>
 

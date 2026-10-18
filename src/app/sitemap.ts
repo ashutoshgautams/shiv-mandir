@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/chanda`, lastModified, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE_URL}/puja`, lastModified, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/sampark`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/sadasya`, lastModified, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE_URL}/darshan`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     ...DEITIES.map((d) => ({
       url: `${SITE_URL}/darshan/${d.slug}`,

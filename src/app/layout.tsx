@@ -23,9 +23,9 @@ const mukta = Mukta({
 });
 
 const home = pageMeta({
-  title: `${MANDIR.name} | शिव मंदिर रोड नं. 24, राजीव नगर, पटना`,
+  title: `${MANDIR.name} | Shiv Mandir Road No. 24, Rajeev Nagar, Patna`,
   description:
-    "शिव मंदिर, रोड नं. 24, राजीव नगर, पटना (Shiv Mandir Road No. 24, Rajeev Nagar). श्री शान्तेश्वर महादेव के दर्शन, रुद्राभिषेक व पूजा-पाठ बुकिंग, आरती समय और दुर्गा पूजा 2026 का ऑनलाइन चंदा।",
+    "शिव मंदिर रोड नं. 24, राजीव नगर, पटना (Shiv Mandir / Mandir Road No. 24, Rajeev Nagar). श्री शान्तेश्वर महादेव के दर्शन, रुद्राभिषेक व पूजा-पाठ बुकिंग, आरती समय, सदस्यता और दुर्गा पूजा 2026 का ऑनलाइन चंदा।",
   path: "/",
   image: "/og/home.jpg",
   imageAlt: `${MANDIR.name}, रोड नं. 24, राजीव नगर, पटना`,
@@ -67,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: textSizeScript }} />
         <JsonLd data={[templeSchema, websiteSchema]} />
       </head>
-      <body className="min-h-dvh flex flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
+      <body className="min-h-dvh flex flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:btn focus:btn-primary"
