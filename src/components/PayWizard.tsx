@@ -93,7 +93,7 @@ export function PayWizard({
     choice: choiceTitle,
     name: "आपका नाम",
     phone: "आपका मोबाइल नंबर",
-    pay: "QR स्कैन करके भुगतान करें",
+    pay: "भुगतान करें",
     utr: "भुगतान हो गया? लेनदेन संख्या लिखें",
   };
   const BUTTON: Record<Step, string> = {

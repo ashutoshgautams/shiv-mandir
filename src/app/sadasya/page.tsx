@@ -9,7 +9,6 @@ import { breadcrumbs } from "@/lib/schema";
 import { PageHeading, SectionTitle } from "@/components/PageHeading";
 import { MembershipClient } from "@/components/MembershipClient";
 import { SamitiList } from "@/components/SamitiList";
-import { UpiScanner } from "@/components/UpiScanner";
 import { JsonLd } from "@/components/JsonLd";
 
 export const metadata: Metadata = pageMeta({
@@ -48,7 +47,6 @@ export default function SadasyaPage() {
                 <li>मंदिर परिवार की सूची में आपका नाम</li>
               </ul>
             </div>
-            <UpiScanner title="सदस्यता शुल्क स्कैनर" note="स्कैन करके भुगतान करें, फिर फ़ॉर्म भरें या WhatsApp पर नाम भेजें ताकि रसीद बन सके।" />
           </div>
         </section>
 

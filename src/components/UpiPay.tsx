@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import QRCode from "qrcode";
 import { MANDIR } from "@/lib/mandir";
 import { rupees } from "@/lib/contact";
@@ -8,6 +8,32 @@ import { CheckIcon, CopyIcon } from "./Icons";
 
 export const upiLinkFor = (amount: number, note: string) =>
   `upi://pay?${new URLSearchParams({ pa: MANDIR.upiId, pn: MANDIR.upiPayee, am: String(amount), cu: "INR", tn: note.slice(0, 50) })}`;
+
+const upiQuery = (amount: number, note: string) =>
+  new URLSearchParams({ pa: MANDIR.upiId, pn: MANDIR.upiPayee, am: String(amount), cu: "INR", tn: note.slice(0, 50) }).toString();
+
+type Platform = "android" | "ios" | "other";
+const noop = () => () => {};
+const getPlatform = (): Platform => {
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) return "android";
+  if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+  return "other";
+};
+
+// Opening a specific app: Android intent URLs target the app's package; iOS uses each app's own scheme.
+const APPS: { name: string; color: string; android?: string; ios?: (q: string) => string }[] = [
+  { name: "Google Pay", color: "#1a73e8", android: "com.google.android.apps.nbu.paisa.user", ios: (q) => `gpay://upi/pay?${q}` },
+  { name: "PhonePe", color: "#5f259f", android: "com.phonepe.app", ios: (q) => `phonepe://pay?${q}` },
+  { name: "Paytm", color: "#00b9f1", android: "net.one97.paytm", ios: (q) => `paytmmp://pay?${q}` },
+  { name: "BHIM", color: "#f47920", android: "in.org.npci.upiapp" },
+];
+
+function appLink(app: (typeof APPS)[number], platform: Platform, q: string) {
+  if (platform === "android" && app.android) return `intent://pay?${q}#Intent;scheme=upi;package=${app.android};end`;
+  if (platform === "ios" && app.ios) return app.ios(q);
+  return null;
+}
 
 // UTRs are 12 digits for UPI; some apps show longer alphanumeric IDs, so accept 6–35 letters/digits.
 export function cleanUtr(v: string) {
@@ -19,7 +45,11 @@ export function utrError(v: string) {
 
 // QR + "open UPI app" for an existing receipt. The receipt number goes in the UPI note for bank matching.
 export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: string; purpose: string }) {
-  const link = upiLinkFor(amount, `${receipt} ${purpose}`);
+  const note = `${receipt} ${purpose}`;
+  const link = upiLinkFor(amount, note);
+  const q = upiQuery(amount, note);
+  const platform = useSyncExternalStore(noop, getPlatform, () => "other" as Platform);
+  const apps = APPS.map((a) => ({ ...a, href: appLink(a, platform, q) })).filter((a) => a.href);
   const [qr, setQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -33,9 +63,25 @@ export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: s
         <span className="text-ink-soft">{purpose} · रसीद {receipt}</span>
         <span className="text-[2.4rem] font-bold tabular-nums leading-tight">{rupees(amount)}</span>
       </div>
-      <a href={link} className="btn btn-primary w-full max-w-sm min-h-14 text-[1.12rem] md:hidden">
-        UPI ऐप खोलकर भुगतान करें
-      </a>
+      {apps.length > 0 && (
+        <div className="w-full max-w-sm grid gap-2">
+          <span className="font-semibold">अपना UPI ऐप चुनें</span>
+          <div className="grid grid-cols-2 gap-2">
+            {apps.map((a) => (
+              <a
+                key={a.name}
+                href={a.href!}
+                className="flex items-center justify-center gap-2 min-h-13 px-3 rounded-xl border-2 border-line bg-card no-underline text-ink font-semibold hover:border-maroon"
+              >
+                <span aria-hidden="true" className="w-3 h-3 rounded-full shrink-0" style={{ background: a.color }} />
+                {a.name}
+              </a>
+            ))}
+          </div>
+          <a href={link} className="text-maroon font-semibold text-[0.95rem] underline underline-offset-4">कोई और UPI ऐप</a>
+          <span className="text-ink-soft text-[0.88rem]">या दूसरे फ़ोन से नीचे का QR स्कैन करें</span>
+        </div>
+      )}
       <div className="w-56 h-56 md:w-64 md:h-64 rounded-2xl border-2 border-line bg-white p-3 grid place-items-center">
         {qr ? (
           // eslint-disable-next-line @next/next/no-img-element

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { CHANDA_AMOUNTS, CHANDA_PURPOSES } from "@/lib/chanda";
 import { rupees } from "@/lib/contact";
 import { PayWizard } from "./PayWizard";
-import { UpiScanner } from "./UpiScanner";
 
 type Summary = { total: number; count: number; recent: { receipt: string; name: string; amount: number }[] };
 type Details = { purpose: string; amount: number | null; custom: string };
@@ -155,10 +154,6 @@ export function ChandaClient() {
             <p className="text-ink-soft">समिति द्वारा पुष्टि के बाद सहयोगियों के नाम यहाँ दिखेंगे।</p>
           )}
         </div>
-        <UpiScanner
-          title="सीधे स्कैन करके भुगतान"
-          note="रसीद चाहिए तो बाईं ओर का फ़ॉर्म भरें। सीधे स्कैन करने पर WhatsApp पर नाम और राशि भेज दें।"
-        />
       </aside>
     </div>
   );

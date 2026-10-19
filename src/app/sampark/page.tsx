@@ -1,10 +1,10 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { MANDIR } from "@/lib/mandir";
 import { telHref, whatsappHref } from "@/lib/contact";
 import { PageHeading, SectionTitle } from "@/components/PageHeading";
 import { SamayTable } from "@/components/SamayTable";
 import { CopyAddress } from "@/components/CopyAddress";
-import { UpiScanner } from "@/components/UpiScanner";
 import { PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbs, faqSchema } from "@/lib/schema";
@@ -60,7 +60,10 @@ export default function SamparkPage() {
                 )}
               </div>
             </div>
-            <UpiScanner title="दान / चंदा के लिए UPI स्कैनर" />
+            <Link href="/chanda" className="bg-card rounded-2xl border-2 border-gold/50 p-5 grid gap-1 no-underline text-ink hover:border-gold">
+              <span className="eyebrow">दान / चंदा / सदस्यता</span>
+              <span className="font-semibold text-[1.1rem]">ऑनलाइन भुगतान करें और रसीद पाएँ →</span>
+            </Link>
           </div>
           <div className="rounded-2xl overflow-hidden border border-line bg-card aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[28rem]">
             <iframe
