@@ -23,8 +23,8 @@ export default function Home() {
     <>
       {/* Hero: photo stays clean; name and actions sit beside it (below it on phones) */}
       <section className="bg-card border-b border-line">
-        <div className="wrap grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-6 md:gap-10 lg:gap-14 items-center md:py-12">
-          <div className="relative -mx-4 md:mx-0 md:order-2 aspect-[16/10] md:aspect-[4/3] lg:aspect-[3/2] overflow-hidden md:rounded-2xl md:border-4 md:border-card md:ring-1 md:ring-gold/60 md:shadow-[0_18px_44px_rgba(35,23,15,0.16)]">
+        <div className="wrap grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-4 md:gap-10 lg:gap-14 items-center md:py-12">
+          <div className="relative -mx-4 md:mx-0 md:order-2 aspect-[2/1] md:aspect-[4/3] lg:aspect-[3/2] overflow-hidden md:rounded-2xl md:border-4 md:border-card md:ring-1 md:ring-gold/60 md:shadow-[0_18px_44px_rgba(35,23,15,0.16)]">
             <Image
               src="/images/mandir.jpg"
               alt={`${MANDIR.name}, रोड नं. 24, राजीव नगर, पटना का मुख्य द्वार`}
@@ -35,8 +35,8 @@ export default function Home() {
             />
           </div>
 
-          <div className="md:order-1 grid gap-4 pb-9 md:pb-0">
-            <span className="font-display text-maroon text-[1.15rem]">ॐ नमः शिवाय</span>
+          <div className="md:order-1 grid gap-2.5 md:gap-4 pb-7 md:pb-0">
+            <span className="hidden md:block font-display text-maroon text-[1.15rem]">ॐ नमः शिवाय</span>
             <h1 className="leading-[1.15]">
               <span className="block text-gold text-[1.15rem] md:text-[1.5rem] mb-0.5">श्री श्री</span>
               <span className="block text-[2rem] sm:text-[2.5rem] lg:text-[3.2rem]">शान्तेश्वर शिवलोक मंदिर</span>
@@ -52,10 +52,10 @@ export default function Home() {
                 <span>{MANDIR.addressLines.join(", ")}</span>
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 mt-2">
-              <Link href="/darshan" className="btn btn-primary col-span-2 min-h-14 text-[1.12rem]">दर्शन करें</Link>
-              <Link href="/puja" className="btn btn-outline min-h-14">पूजा बुक करें</Link>
-              <Link href="/chanda" className="btn btn-saffron min-h-14">चंदा दें</Link>
+            <div className="grid grid-cols-2 gap-2.5 md:gap-3 mt-1 md:mt-2">
+              <Link href="/darshan" className="btn btn-primary col-span-2 min-h-12 md:min-h-14 text-[1.12rem]">दर्शन करें</Link>
+              <Link href="/puja" className="btn btn-outline min-h-12 md:min-h-14">पूजा बुक करें</Link>
+              <Link href="/chanda" className="btn btn-saffron min-h-12 md:min-h-14">चंदा दें</Link>
             </div>
           </div>
         </div>
