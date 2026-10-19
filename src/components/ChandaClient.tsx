@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ABHIYAN } from "@/lib/mandir";
+import { ABHIYAN, MEMBERSHIP } from "@/lib/mandir";
+import Link from "next/link";
 import { CHANDA_AMOUNTS, CHANDA_PURPOSES } from "@/lib/chanda";
 import { rupees } from "@/lib/contact";
 import { PayWizard } from "./PayWizard";
@@ -10,16 +11,20 @@ import { UpiScanner } from "./UpiScanner";
 type Summary = { total: number; count: number; recent: { receipt: string; name: string; amount: number }[] };
 type Details = { purpose: string; amount: number | null; custom: string };
 
+// Membership leads the list: fixed yearly amount, recorded as a membership payment.
+const SADASYATA = { id: "sadasyata", name: "सदस्यता", about: `मंदिर परिवार के सदस्य बनें · वार्षिक सहयोग` };
+
 export function ChandaClient() {
   const [d, setD] = useState<Details>({
-    purpose: ABHIYAN.active ? ABHIYAN.id : CHANDA_PURPOSES[1].id,
+    purpose: SADASYATA.id,
     amount: 501,
     custom: "",
   });
   const [summary, setSummary] = useState<Summary | null>(null);
 
-  const amount = d.amount ?? Math.round(Number(d.custom));
-  const purpose = CHANDA_PURPOSES.find((p) => p.id === d.purpose)!;
+  const isMember = d.purpose === SADASYATA.id;
+  const amount = isMember ? MEMBERSHIP.fee : (d.amount ?? Math.round(Number(d.custom)));
+  const purposeName = isMember ? `नई सदस्यता ${MEMBERSHIP.year}` : CHANDA_PURPOSES.find((p) => p.id === d.purpose)!.name;
 
   const refresh = useCallback(() => {
     fetch(`/api/chanda?kind=${ABHIYAN.id}`)
@@ -34,8 +39,8 @@ export function ChandaClient() {
       <PayWizard
         choiceTitle="किस कार्य के लिए, कितना चंदा"
         amount={amount || 0}
-        purpose={purpose.name}
-        body={{ type: "chanda", purpose: d.purpose }}
+        purpose={purposeName}
+        body={isMember ? { type: "membership", memberMode: "new" } : { type: "chanda", purpose: d.purpose }}
         allowAnonymous
         validateChoice={() => (!amount || amount < 1 ? "कृपया चंदा की राशि चुनें या लिखें।" : null)}
         choice={
@@ -43,6 +48,18 @@ export function ChandaClient() {
             <fieldset className="grid gap-2.5">
               <legend className="font-semibold mb-2">कार्य</legend>
               <div className="grid grid-cols-2 gap-2.5">
+                <label
+                  className={`col-span-2 relative flex items-center justify-between gap-3 p-3.5 md:p-4 rounded-xl border-2 cursor-pointer transition-colors has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-saffron ${
+                    isMember ? "border-maroon bg-saffron-soft" : "border-gold/60 hover:border-gold"
+                  }`}
+                >
+                  <input type="radio" name="purpose" id="cp-sadasyata" value={SADASYATA.id} checked={isMember} onChange={() => setD({ ...d, purpose: SADASYATA.id })} className="sr-only" />
+                  <span className="grid gap-0.5">
+                    <span className="font-semibold text-[1.08rem] md:text-[1.12rem]">{SADASYATA.name}</span>
+                    <span className="text-ink-soft text-[0.85rem] md:text-[0.92rem] leading-snug">{SADASYATA.about}</span>
+                  </span>
+                  <span className="font-bold text-[1.3rem] tabular-nums text-maroon shrink-0">{rupees(MEMBERSHIP.fee)}</span>
+                </label>
                 {CHANDA_PURPOSES.map((p) => (
                   <label
                     key={p.id}
@@ -62,39 +79,45 @@ export function ChandaClient() {
                 ))}
               </div>
             </fieldset>
+            {isMember ? (
+              <p className="text-ink-soft text-[0.95rem]">
+                पहले से सदस्य हैं और बकाया जमा करना है? <Link href="/sadasya" className="text-maroon font-semibold">सदस्यता पृष्ठ पर जाएँ</Link>
+              </p>
+            ) : (
             <fieldset className="grid gap-2.5">
-              <legend className="font-semibold mb-2">राशि</legend>
-              <div className="grid grid-cols-3 gap-2.5">
-                {CHANDA_AMOUNTS.map((a) => (
-                  <button
-                    key={a}
-                    type="button"
-                    aria-pressed={d.amount === a}
-                    onClick={() => setD({ ...d, amount: a, custom: "" })}
-                    className={`h-14 rounded-xl border-2 font-bold text-[1.1rem] tabular-nums transition-colors ${
-                      d.amount === a ? "bg-maroon border-maroon text-white" : "bg-card border-line hover:border-maroon"
-                    }`}
-                  >
-                    {rupees(a)}
-                  </button>
-                ))}
-              </div>
-              <div className="relative">
-                <label htmlFor="chanda-custom" className="sr-only">अपनी राशि</label>
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-ink-soft">₹</span>
-                <input
-                  id="chanda-custom"
-                  type="number"
-                  inputMode="numeric"
-                  min={1}
-                  value={d.custom}
-                  onChange={(e) => setD({ ...d, custom: e.target.value, amount: null })}
-                  onFocus={() => setD((x) => ({ ...x, amount: null }))}
-                  placeholder="या अपनी राशि लिखें"
-                  className="input pl-9 tabular-nums min-h-14 text-[1.1rem]"
-                />
-              </div>
-            </fieldset>
+                <legend className="font-semibold mb-2">राशि</legend>
+                <div className="grid grid-cols-3 gap-2.5">
+                  {CHANDA_AMOUNTS.map((a) => (
+                    <button
+                      key={a}
+                      type="button"
+                      aria-pressed={d.amount === a}
+                      onClick={() => setD({ ...d, amount: a, custom: "" })}
+                      className={`h-14 rounded-xl border-2 font-bold text-[1.1rem] tabular-nums transition-colors ${
+                        d.amount === a ? "bg-maroon border-maroon text-white" : "bg-card border-line hover:border-maroon"
+                      }`}
+                    >
+                      {rupees(a)}
+                    </button>
+                  ))}
+                </div>
+                <div className="relative">
+                  <label htmlFor="chanda-custom" className="sr-only">अपनी राशि</label>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-ink-soft">₹</span>
+                  <input
+                    id="chanda-custom"
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    value={d.custom}
+                    onChange={(e) => setD({ ...d, custom: e.target.value, amount: null })}
+                    onFocus={() => setD((x) => ({ ...x, amount: null }))}
+                    placeholder="या अपनी राशि लिखें"
+                    className="input pl-9 tabular-nums min-h-14 text-[1.1rem]"
+                  />
+                </div>
+              </fieldset>
+            )}
           </div>
         }
       />
