@@ -41,7 +41,7 @@ export default function Home() {
               <span className="block text-gold text-[1.15rem] md:text-[1.5rem] mb-0.5">श्री श्री</span>
               <span className="block text-[2rem] sm:text-[2.5rem] lg:text-[3.2rem]">शान्तेश्वर शिवलोक मंदिर</span>
             </h1>
-            <div aria-hidden="true" className="flex items-center gap-2 text-gold">
+            <div aria-hidden="true" className="hidden md:flex items-center gap-2 text-gold">
               <span className="h-px w-10 bg-gold/70" />
               <span className="w-1.5 h-1.5 rotate-45 bg-saffron" />
               <span className="h-px w-10 bg-gold/70" />
@@ -51,7 +51,6 @@ export default function Home() {
                 <PinIcon width={22} height={22} className="shrink-0 mt-1 text-maroon" />
                 <span>{MANDIR.addressLines.join(", ")}</span>
               </p>
-              <p lang="en" className="text-ink-soft text-[0.95rem] pl-[30px]">Shiv Mandir, Road No. 24, Rajeev Nagar, Patna</p>
             </div>
             <div className="grid grid-cols-2 gap-3 mt-2">
               <Link href="/darshan" className="btn btn-primary col-span-2 min-h-14 text-[1.12rem]">दर्शन करें</Link>
@@ -62,9 +61,10 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="flex flex-col">
       <TodayStrip />
 
-      <section className="wrap mt-8 md:mt-12" aria-label="मंदिर का परिचय">
+      <section className="wrap mt-10 md:mt-12 order-[90] md:order-none" aria-label="मंदिर का परिचय">
         <p className="max-w-[68ch] text-[1.12rem] leading-relaxed">
           <strong className="font-semibold">{MANDIR.name}</strong> पटना के राजीव नगर में <strong className="font-semibold">रोड नं. 24</strong> पर स्थित शिव मंदिर है।
           मोहल्ले में इसे “रोड नं. 24 वाला शिव मंदिर” या “राजीव नगर का शिव मंदिर” के नाम से जाना जाता है। प्रधान देव श्री शान्तेश्वर महादेव के साथ यहाँ माँ दुर्गा, हनुमान जी,
@@ -149,7 +149,7 @@ export default function Home() {
 
       {/* Timings */}
       <section className="wrap mt-10 md:mt-16" aria-labelledby="samay-title">
-        <SectionTitle id="samay-title" eyebrow="आरती एवं दर्शन" title="मंदिर का समय" lead="गर्मी और सर्दी में समय अलग रहता है।" />
+        <SectionTitle id="samay-title" eyebrow="आरती एवं दर्शन" title="मंदिर का समय" lead="ग्रीष्म ऋतु और शरद ऋतु में समय अलग रहता है।" />
         <SamayTable />
       </section>
 
@@ -183,7 +183,7 @@ export default function Home() {
       </section>
 
       {/* Visit */}
-      <section className="wrap mt-16 mb-6" aria-labelledby="visit-title">
+      <section className="order-[100] md:order-none wrap mt-10 md:mt-16 mb-6" aria-labelledby="visit-title">
         <div className="rounded-2xl bg-maroon text-white p-5 md:p-10 grid md:grid-cols-[1fr_auto] gap-5 md:gap-6 items-center">
           <div className="grid gap-2">
             <h2 id="visit-title" className="text-[1.9rem]">मंदिर कैसे पहुँचें</h2>
@@ -202,6 +202,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 }

@@ -5,7 +5,7 @@ export type Season = { id: string; title: string; range: string; months: number[
 export const SEASONS: Season[] = [
   {
     id: "grishm",
-    title: "गर्मी",
+    title: "ग्रीष्म ऋतु",
     range: "अप्रैल से सितंबर",
     months: [4, 5, 6, 7, 8, 9],
     rows: [
@@ -19,7 +19,7 @@ export const SEASONS: Season[] = [
   },
   {
     id: "shit",
-    title: "सर्दी",
+    title: "शरद ऋतु",
     range: "अक्टूबर से मार्च",
     months: [10, 11, 12, 1, 2, 3],
     rows: [
