@@ -24,7 +24,7 @@ export default function Home() {
       {/* Hero: photo stays clean; name and actions sit beside it (below it on phones) */}
       <section className="bg-card border-b border-line">
         <div className="wrap grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-4 md:gap-10 lg:gap-14 items-center md:py-12">
-          <div className="relative -mx-4 md:mx-0 md:order-2 aspect-[2/1] md:aspect-[4/3] lg:aspect-[3/2] overflow-hidden md:rounded-2xl md:border-4 md:border-card md:ring-1 md:ring-gold/60 md:shadow-[0_18px_44px_rgba(35,23,15,0.16)]">
+          <div className="relative -mx-4 md:mx-0 md:order-2 aspect-[16/9] md:aspect-[4/3] lg:aspect-[3/2] overflow-hidden md:rounded-2xl md:border-4 md:border-card md:ring-1 md:ring-gold/60 md:shadow-[0_18px_44px_rgba(35,23,15,0.16)]">
             <Image
               src="/images/mandir.jpg"
               alt={`${MANDIR.name}, रोड नं. 24, राजीव नगर, पटना का मुख्य द्वार`}
@@ -102,15 +102,13 @@ export default function Home() {
               <span className="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-maroon text-white text-[0.9rem] font-semibold">
                 <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" aria-hidden="true" /> अभी चल रहा है
               </span>
-              <h2 id="abhiyan-title" className="text-[2rem] md:text-[2.5rem] text-maroon">
-                {ABHIYAN.title} <span className="text-ink text-[0.6em] block md:inline">{ABHIYAN.subtitle}</span>
+              <h2 id="abhiyan-title" className="text-[1.8rem] md:text-[2.5rem] text-maroon leading-tight">
+                {ABHIYAN.title} <span className="text-ink text-[0.6em] md:inline">· {ABHIYAN.subtitle}</span>
               </h2>
-              <p className="text-[1.08rem] text-ink-soft">{ABHIYAN.appeal}</p>
-              <div className="flex flex-wrap gap-3 mt-1">
-                <Link href="/chanda" className="btn btn-primary">
-                  ऑनलाइन चंदा दें <ArrowRight />
-                </Link>
-                <Link href="/darshan/durga-puja-2026" className="btn btn-outline">पंडाल के दर्शन</Link>
+              <p className="text-[1rem] md:text-[1.08rem] text-ink-soft">पूजा, पंडाल, प्रसाद और विसर्जन के लिए आपका सहयोग।</p>
+              <div className="grid grid-cols-2 gap-2.5 md:flex md:gap-3 mt-1">
+                <Link href="/chanda" className="btn btn-primary min-h-12 px-3">चंदा दें</Link>
+                <Link href="/darshan/durga-puja-2026" className="btn btn-outline min-h-12 px-3">पंडाल दर्शन</Link>
               </div>
             </div>
           </div>
