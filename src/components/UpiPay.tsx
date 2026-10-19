@@ -22,17 +22,40 @@ const getPlatform = (): Platform => {
 };
 
 // Opening a specific app: Android intent URLs target the app's package; iOS uses each app's own scheme.
-const APPS: { name: string; color: string; android?: string; ios?: (q: string) => string }[] = [
-  { name: "Google Pay", color: "#1a73e8", android: "com.google.android.apps.nbu.paisa.user", ios: (q) => `gpay://upi/pay?${q}` },
-  { name: "PhonePe", color: "#5f259f", android: "com.phonepe.app", ios: (q) => `phonepe://pay?${q}` },
-  { name: "Paytm", color: "#00b9f1", android: "net.one97.paytm", ios: (q) => `paytmmp://pay?${q}` },
-  { name: "BHIM", color: "#f47920", android: "in.org.npci.upiapp" },
+type App = { name: string; logo?: string; badge?: string; color?: string; android?: string; ios?: (q: string) => string };
+
+// Shown as big buttons.
+const MAIN_APPS: App[] = [
+  { name: "Google Pay", logo: "/upi/gpay.svg", android: "com.google.android.apps.nbu.paisa.user", ios: (q) => `gpay://upi/pay?${q}` },
+  { name: "Paytm", logo: "/upi/paytm.svg", android: "net.one97.paytm", ios: (q) => `paytmmp://pay?${q}` },
 ];
 
-function appLink(app: (typeof APPS)[number], platform: Platform, q: string) {
+// Listed under "अन्य UPI ऐप". On Android each opens that app directly.
+const OTHER_APPS: App[] = [
+  { name: "BHIM UPI", logo: "/upi/upi.svg", android: "in.org.npci.upiapp" },
+  { name: "WhatsApp", logo: "/upi/whatsapp.svg", android: "com.whatsapp" },
+  { name: "Amazon Pay", logo: "/upi/amazonpay.svg", android: "in.amazon.mShop.android.shopping" },
+  { name: "CRED", badge: "C", color: "#111111", android: "com.dreamplug.androidapp" },
+  { name: "MobiKwik", badge: "M", color: "#1f4cb3", android: "com.mobikwik_new" },
+];
+
+function appLink(app: App, platform: Platform, q: string) {
   if (platform === "android" && app.android) return `intent://pay?${q}#Intent;scheme=upi;package=${app.android};end`;
   if (platform === "ios" && app.ios) return app.ios(q);
   return null;
+}
+
+function AppMark({ app, size = 26 }: { app: App; size?: number }) {
+  if (app.logo) {
+    // eslint-disable-next-line @next/next/no-img-element
+    // Wordmark logos (Paytm, UPI, Amazon Pay) are wide, so keep the height and let the width follow.
+    return <img src={app.logo} alt="" height={size} className="shrink-0 object-contain" style={{ height: size, width: "auto", maxWidth: size * 2.4 }} />;
+  }
+  return (
+    <span aria-hidden="true" className="shrink-0 grid place-items-center rounded-md text-white font-bold text-[0.8rem]" style={{ width: size, height: size, background: app.color }}>
+      {app.badge}
+    </span>
+  );
 }
 
 // UTRs are 12 digits for UPI; some apps show longer alphanumeric IDs, so accept 6–35 letters/digits.
@@ -49,7 +72,9 @@ export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: s
   const link = upiLinkFor(amount, note);
   const q = upiQuery(amount, note);
   const platform = useSyncExternalStore(noop, getPlatform, () => "other" as Platform);
-  const apps = APPS.map((a) => ({ ...a, href: appLink(a, platform, q) })).filter((a) => a.href);
+  const main = MAIN_APPS.map((a) => ({ app: a, href: appLink(a, platform, q) })).filter((a) => a.href);
+  const others = OTHER_APPS.map((a) => ({ app: a, href: appLink(a, platform, q) })).filter((a) => a.href);
+  const [showOthers, setShowOthers] = useState(false);
   const [qr, setQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -63,22 +88,51 @@ export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: s
         <span className="text-ink-soft">{purpose} · रसीद {receipt}</span>
         <span className="text-[2.4rem] font-bold tabular-nums leading-tight">{rupees(amount)}</span>
       </div>
-      {apps.length > 0 && (
+      {platform !== "other" && (
         <div className="w-full max-w-sm grid gap-2">
           <span className="font-semibold">अपना UPI ऐप चुनें</span>
           <div className="grid grid-cols-2 gap-2">
-            {apps.map((a) => (
+            {main.map(({ app, href }) => (
               <a
-                key={a.name}
-                href={a.href!}
-                className="flex items-center justify-center gap-2 min-h-13 px-3 rounded-xl border-2 border-line bg-card no-underline text-ink font-semibold hover:border-maroon"
+                key={app.name}
+                href={href!}
+                className="flex items-center justify-center gap-2.5 min-h-14 px-3 rounded-xl border-2 border-line bg-card no-underline text-ink font-semibold hover:border-maroon"
               >
-                <span aria-hidden="true" className="w-3 h-3 rounded-full shrink-0" style={{ background: a.color }} />
-                {a.name}
+                <AppMark app={app} size={28} />
+                {app.name}
               </a>
             ))}
           </div>
-          <a href={link} className="text-maroon font-semibold text-[0.95rem] underline underline-offset-4">कोई और UPI ऐप</a>
+          <button
+            type="button"
+            onClick={() => setShowOthers((v) => !v)}
+            aria-expanded={showOthers}
+            className="min-h-12 rounded-xl border-2 border-dashed border-line text-maroon font-semibold hover:border-maroon"
+          >
+            {showOthers ? "कम दिखाएँ" : "अन्य UPI ऐप (BHIM, WhatsApp, Amazon Pay…)"}
+          </button>
+          {showOthers && (
+            <div className="grid gap-2">
+              {others.length > 0 && (
+                <div className="grid grid-cols-2 gap-2">
+                  {others.map(({ app, href }) => (
+                    <a
+                      key={app.name}
+                      href={href!}
+                      className="flex items-center gap-2 min-h-12 px-3 rounded-xl border border-line bg-card no-underline text-ink font-medium hover:border-maroon"
+                    >
+                      <AppMark app={app} size={22} />
+                      {app.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+              <a href={link} className="flex items-center justify-center gap-2 min-h-12 rounded-xl border border-line bg-paper no-underline text-ink font-medium hover:border-maroon">
+                <AppMark app={{ name: "UPI", logo: "/upi/upi.svg" }} size={22} />
+                फ़ोन में मौजूद कोई भी UPI ऐप
+              </a>
+            </div>
+          )}
           <span className="text-ink-soft text-[0.88rem]">या दूसरे फ़ोन से नीचे का QR स्कैन करें</span>
         </div>
       )}
@@ -90,7 +144,7 @@ export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: s
           <span className="text-ink-soft">QR बन रहा है…</span>
         )}
       </div>
-      <p className="text-ink-soft text-[0.95rem]">PhonePe, Google Pay, Paytm या BHIM से स्कैन करें</p>
+      <p className="text-ink-soft text-[0.95rem]">किसी भी UPI ऐप से स्कैन करें</p>
       <div className="flex items-center gap-2">
         <span className="font-semibold text-[1.1rem] tabular-nums">{MANDIR.upiId}</span>
         <button

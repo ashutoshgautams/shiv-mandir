@@ -47,6 +47,7 @@ export const DEITIES: Deity[] = [
     days: "सोमवार, सावन मास, महाशिवरात्रि",
     offerings: "जल, दूध, बेलपत्र, धतूरा",
     image: "/images/deities/shivling.jpg",
+    detail: { src: "/images/deities/shivling-full.jpg", width: 660, height: 816 },
   },
   {
     slug: "durga",
