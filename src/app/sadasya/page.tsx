@@ -34,7 +34,10 @@ export default function SadasyaPage() {
           <div className="grid gap-3">
             <div className="flex flex-wrap items-baseline justify-between gap-3 px-1">
               <h2 className="text-[1.5rem]">सदस्यता {MEMBERSHIP.year}</h2>
-              <p className="text-[1.12rem]"><span className="font-bold tabular-nums">{rupees(MEMBERSHIP.fee)}</span> <span className="text-ink-soft">प्रति वर्ष</span></p>
+              <p className="text-[1.12rem] text-right leading-snug">
+                <span className="font-bold tabular-nums">{rupees(MEMBERSHIP.fee)}</span> <span className="text-ink-soft">प्रति वर्ष</span>
+                <span className="block text-ink-soft text-[0.9rem]">लगभग {rupees(Math.round(MEMBERSHIP.fee / 12 / 10) * 10)} प्रति माह</span>
+              </p>
             </div>
             <MembershipClient />
           </div>
