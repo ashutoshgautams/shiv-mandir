@@ -22,40 +22,19 @@ const getPlatform = (): Platform => {
 };
 
 // Opening a specific app: Android intent URLs target the app's package; iOS uses each app's own scheme.
-type App = { name: string; logo?: string; badge?: string; color?: string; android?: string; ios?: (q: string) => string };
+type App = { name: string; logo: string; wide?: boolean; android?: string; ios?: (q: string) => string };
 
-// Shown as big buttons.
-const MAIN_APPS: App[] = [
+const APPS: App[] = [
   { name: "Google Pay", logo: "/upi/gpay.svg", android: "com.google.android.apps.nbu.paisa.user", ios: (q) => `gpay://upi/pay?${q}` },
-  { name: "Paytm", logo: "/upi/paytm.svg", android: "net.one97.paytm", ios: (q) => `paytmmp://pay?${q}` },
+  { name: "Paytm", logo: "/upi/paytm.svg", wide: true, android: "net.one97.paytm", ios: (q) => `paytmmp://pay?${q}` },
 ];
-
-// Listed under "अन्य UPI ऐप". On Android each opens that app directly.
-const OTHER_APPS: App[] = [
-  { name: "BHIM UPI", logo: "/upi/upi.svg", android: "in.org.npci.upiapp" },
-  { name: "WhatsApp", logo: "/upi/whatsapp.svg", android: "com.whatsapp" },
-  { name: "Amazon Pay", logo: "/upi/amazonpay.svg", android: "in.amazon.mShop.android.shopping" },
-  { name: "CRED", badge: "C", color: "#111111", android: "com.dreamplug.androidapp" },
-  { name: "MobiKwik", badge: "M", color: "#1f4cb3", android: "com.mobikwik_new" },
-];
+// WhatsApp only opens payments by package on Android, so it is offered there only.
+const WHATSAPP: App = { name: "WhatsApp UPI", logo: "/upi/whatsapp.svg", android: "com.whatsapp" };
 
 function appLink(app: App, platform: Platform, q: string) {
   if (platform === "android" && app.android) return `intent://pay?${q}#Intent;scheme=upi;package=${app.android};end`;
   if (platform === "ios" && app.ios) return app.ios(q);
   return null;
-}
-
-function AppMark({ app, size = 26 }: { app: App; size?: number }) {
-  if (app.logo) {
-    // Wordmark logos (Paytm, UPI, Amazon Pay) are wide, so keep the height and let the width follow.
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={app.logo} alt="" height={size} className="shrink-0 object-contain" style={{ height: size, width: "auto", maxWidth: size * 2.4 }} />;
-  }
-  return (
-    <span aria-hidden="true" className="shrink-0 grid place-items-center rounded-md text-white font-bold text-[0.8rem]" style={{ width: size, height: size, background: app.color }}>
-      {app.badge}
-    </span>
-  );
 }
 
 // UTRs are 12 digits for UPI; some apps show longer alphanumeric IDs, so accept 6–35 letters/digits.
@@ -66,102 +45,97 @@ export function utrError(v: string) {
   return /^[A-Za-z0-9]{6,35}$/.test(cleanUtr(v)) ? null : "कृपया भुगतान के बाद ऐप में दिखी लेनदेन संख्या (UTR / Transaction ID) लिखें।";
 }
 
-// QR + "open UPI app" for an existing receipt. The receipt number goes in the UPI note for bank matching.
+function Heading({ children }: { children: React.ReactNode }) {
+  return <h3 className="font-sans font-semibold text-[1.05rem] text-ink">{children}</h3>;
+}
+
+// Payment step for an existing receipt: (1) open an app, (2) copy the UPI ID, (3) scan the QR.
+// The receipt number goes in the UPI note so the treasurer can match it in the bank statement.
 export function UpiQr({ amount, receipt, purpose }: { amount: number; receipt: string; purpose: string }) {
-  const note = `${receipt} ${purpose}`;
-  const link = upiLinkFor(amount, note);
-  const q = upiQuery(amount, note);
+  const q = upiQuery(amount, `${receipt} ${purpose}`);
   const platform = useSyncExternalStore(noop, getPlatform, () => "other" as Platform);
-  const main = MAIN_APPS.map((a) => ({ app: a, href: appLink(a, platform, q) })).filter((a) => a.href);
-  const others = OTHER_APPS.map((a) => ({ app: a, href: appLink(a, platform, q) })).filter((a) => a.href);
-  const [showOthers, setShowOthers] = useState(false);
+  const apps = APPS.map((a) => ({ app: a, href: appLink(a, platform, q) })).filter((a) => a.href);
+  const wa = appLink(WHATSAPP, platform, q);
   const [qr, setQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    QRCode.toDataURL(link, { width: 480, margin: 1, color: { dark: "#23170f", light: "#ffffff" } }).then(setQr);
-  }, [link]);
+    QRCode.toDataURL(upiLinkFor(amount, `${receipt} ${purpose}`), { width: 480, margin: 1, color: { dark: "#23170f", light: "#ffffff" } }).then(setQr);
+  }, [amount, receipt, purpose]);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(MANDIR.upiId);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
-    <div className="grid gap-4 justify-items-center text-center">
-      <div className="grid gap-0.5">
+    <div className="grid gap-5">
+      <div className="grid gap-0.5 text-center">
         <span className="text-ink-soft">{purpose} · रसीद {receipt}</span>
         <span className="text-[2.4rem] font-bold tabular-nums leading-tight">{rupees(amount)}</span>
       </div>
-      {platform !== "other" && (
-        <div className="w-full max-w-sm grid gap-2">
-          <span className="font-semibold">अपना UPI ऐप चुनें</span>
-          <div className="grid grid-cols-2 gap-2">
-            {main.map(({ app, href }) => (
+
+      {(apps.length > 0 || wa) && (
+        <section className="grid gap-2.5">
+          <Heading>ऐप से सीधे भुगतान करें</Heading>
+          <div className="grid grid-cols-2 gap-2.5">
+            {apps.map(({ app, href }) => (
               <a
                 key={app.name}
                 href={href!}
-                className="flex items-center justify-center gap-2.5 min-h-14 px-3 rounded-xl border-2 border-line bg-card no-underline text-ink font-semibold hover:border-maroon"
+                aria-label={`${app.name} से ${rupees(amount)} भेजें`}
+                className="grid place-items-center min-h-16 rounded-xl border-2 border-line bg-card hover:border-maroon"
               >
-                <AppMark app={app} size={28} />
-                {app.name}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={app.logo} alt="" className={app.wide ? "h-7 w-auto" : "h-9 w-auto"} />
               </a>
             ))}
           </div>
+          {wa && (
+            <a href={wa} className="flex items-center justify-center gap-2.5 min-h-14 rounded-xl border-2 border-line bg-card no-underline text-ink font-semibold hover:border-maroon">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={WHATSAPP.logo} alt="" className="h-7 w-7" />
+              WhatsApp UPI से भेजें
+            </a>
+          )}
+        </section>
+      )}
+
+      <section className="grid gap-2.5 rounded-xl bg-paper border border-line p-4">
+        <Heading>{apps.length > 0 || wa ? "या UPI ID कॉपी करके भेजें" : "UPI ID कॉपी करके भेजें"}</Heading>
+        <div className="grid gap-2">
+          <span className="bg-card border border-line rounded-lg px-3 py-3 font-bold text-[1.25rem] tabular-nums text-center tracking-wide select-all">{MANDIR.upiId}</span>
           <button
             type="button"
-            onClick={() => setShowOthers((v) => !v)}
-            aria-expanded={showOthers}
-            className="min-h-12 rounded-xl border-2 border-dashed border-line text-maroon font-semibold hover:border-maroon"
+            onClick={copy}
+            className={`btn w-full min-h-12 py-2 ${copied ? "bg-leaf text-white" : "btn-primary"}`}
           >
-            {showOthers ? "कम दिखाएँ" : "अन्य UPI ऐप (BHIM, WhatsApp, Amazon Pay…)"}
+            {copied ? <><CheckIcon width={18} height={18} /> कॉपी हो गया, अब अपने ऐप में पेस्ट करें</> : <><CopyIcon width={18} height={18} /> UPI ID कॉपी करें</>}
           </button>
-          {showOthers && (
-            <div className="grid gap-2">
-              {others.length > 0 && (
-                <div className="grid grid-cols-2 gap-2">
-                  {others.map(({ app, href }) => (
-                    <a
-                      key={app.name}
-                      href={href!}
-                      className="flex items-center gap-2 min-h-12 px-3 rounded-xl border border-line bg-card no-underline text-ink font-medium hover:border-maroon"
-                    >
-                      <AppMark app={app} size={22} />
-                      {app.name}
-                    </a>
-                  ))}
-                </div>
-              )}
-              <a href={link} className="flex items-center justify-center gap-2 min-h-12 rounded-xl border border-line bg-paper no-underline text-ink font-medium hover:border-maroon">
-                <AppMark app={{ name: "UPI", logo: "/upi/upi.svg" }} size={22} />
-                फ़ोन में मौजूद कोई भी UPI ऐप
-              </a>
-            </div>
-          )}
-          <span className="text-ink-soft text-[0.88rem]">या दूसरे फ़ोन से नीचे का QR स्कैन करें</span>
         </div>
-      )}
-      <div className="w-56 h-56 md:w-64 md:h-64 rounded-2xl border-2 border-line bg-white p-3 grid place-items-center">
-        {qr ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={qr} alt={`${rupees(amount)} भुगतान के लिए UPI QR कोड`} className="w-full h-full" />
-        ) : (
-          <span className="text-ink-soft">QR बन रहा है…</span>
-        )}
-      </div>
-      <p className="text-ink-soft text-[0.95rem]">किसी भी UPI ऐप से स्कैन करें</p>
-      <div className="flex items-center gap-2">
-        <span className="font-semibold text-[1.1rem] tabular-nums">{MANDIR.upiId}</span>
-        <button
-          type="button"
-          aria-label="UPI ID कॉपी करें"
-          className="w-10 h-10 grid place-items-center rounded-lg border-2 border-line hover:border-maroon text-maroon"
-          onClick={async () => {
-            try {
-              await navigator.clipboard.writeText(MANDIR.upiId);
-              setCopied(true);
-              setTimeout(() => setCopied(false), 2000);
-            } catch {}
-          }}
-        >
-          {copied ? <CheckIcon width={18} height={18} /> : <CopyIcon width={18} height={18} />}
-        </button>
-      </div>
+        <ol className="grid gap-1.5 text-[0.95rem] text-ink list-decimal pl-5 marker:text-ink-soft">
+          <li>अपना कोई भी UPI ऐप खोलें</li>
+          <li>“UPI ID पर भेजें / Pay to UPI ID” चुनें और UPI ID <strong>पेस्ट करें</strong></li>
+          <li>राशि <strong className="tabular-nums">{rupees(amount)}</strong> लिखें और संदेश (note) में <strong>{receipt}</strong> लिखें</li>
+        </ol>
+      </section>
+
+      <section className="grid gap-2.5 justify-items-center text-center">
+        <Heading>या QR स्कैन करें</Heading>
+        <div className="w-52 h-52 md:w-60 md:h-60 rounded-2xl border-2 border-line bg-white p-3 grid place-items-center">
+          {qr ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={qr} alt={`${rupees(amount)} भुगतान के लिए UPI QR कोड`} className="w-full h-full" />
+          ) : (
+            <span className="text-ink-soft">QR बन रहा है…</span>
+          )}
+        </div>
+        <p className="text-ink-soft text-[0.92rem]">दूसरे फ़ोन से किसी भी UPI ऐप में स्कैन करें</p>
+      </section>
     </div>
   );
 }
