@@ -47,8 +47,8 @@ function appLink(app: App, platform: Platform, q: string) {
 
 function AppMark({ app, size = 26 }: { app: App; size?: number }) {
   if (app.logo) {
-    // eslint-disable-next-line @next/next/no-img-element
     // Wordmark logos (Paytm, UPI, Amazon Pay) are wide, so keep the height and let the width follow.
+    // eslint-disable-next-line @next/next/no-img-element
     return <img src={app.logo} alt="" height={size} className="shrink-0 object-contain" style={{ height: size, width: "auto", maxWidth: size * 2.4 }} />;
   }
   return (
