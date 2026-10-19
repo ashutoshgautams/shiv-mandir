@@ -36,12 +36,12 @@ function TabBar({ pathname }: { pathname: string }) {
               <Link
                 href={n.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex flex-col items-center justify-center gap-0.5 h-[4.5rem] no-underline text-[0.85rem] font-semibold ${
+                className={`flex flex-col items-center justify-center gap-0.5 h-14 no-underline text-[0.78rem] font-semibold leading-tight ${
                   active ? "text-maroon" : "text-ink-soft"
                 }`}
               >
-                <span className={`grid place-items-center w-12 h-8 rounded-full ${active ? "bg-saffron-soft" : ""}`}>
-                  <Icon width={24} height={24} />
+                <span className={`grid place-items-center w-11 h-7 rounded-full ${active ? "bg-saffron-soft" : ""}`}>
+                  <Icon width={21} height={21} />
                 </span>
                 {n.short}
               </Link>

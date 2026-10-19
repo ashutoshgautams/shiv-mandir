@@ -18,8 +18,8 @@ export async function generateMetadata(props: PageProps<"/darshan/[slug]">): Pro
   const d = getDeity(slug);
   if (!d) return { title: "दर्शन" };
   return pageMeta({
-    title: `${d.name} के दर्शन · ${d.mantra}`,
-    description: `${d.name} (${d.role}) के दर्शन, ${MANDIR.shortName}, रोड नं. 24, राजीव नगर, पटना। ${d.about}`,
+    title: `${d.name} के दर्शन · ${d.en}`,
+    description: `${d.name} (${d.en}) darshan at Shiv Mandir Road No. 24, Rajeev Nagar, Patna. ${d.about}`,
     path: `/darshan/${d.slug}`,
     image: `/og/${d.slug}.jpg`,
     imageAlt: `${d.name}, ${MANDIR.shortName}, राजीव नगर, पटना`,
@@ -48,7 +48,8 @@ export default async function DeityPage(props: PageProps<"/darshan/[slug]">) {
         <div className="grid gap-5">
           <div className="grid gap-1">
             <span className="eyebrow">{d.role}</span>
-            <h1 className="text-[2.3rem] md:text-[2.9rem]">{d.name}</h1>
+            <h1 className="text-[2.1rem] md:text-[2.9rem]">{d.name}</h1>
+            <p lang="en" className="text-ink-soft font-medium">{d.en}</p>
           </div>
           <p className="font-display text-[1.6rem] md:text-[1.85rem] text-maroon leading-snug border-l-4 border-saffron pl-4">
             {d.mantra}

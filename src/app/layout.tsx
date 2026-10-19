@@ -67,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: textSizeScript }} />
         <JsonLd data={[templeSchema, websiteSchema]} />
       </head>
-      <body className="min-h-dvh flex flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <body className="min-h-dvh flex flex-col pb-[calc(3.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:btn focus:btn-primary"

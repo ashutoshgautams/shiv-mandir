@@ -42,6 +42,13 @@ export const KEYWORDS = [
   "Rajiv Nagar Mandir Patna",
   "Rajeev Nagar Shiv Mandir",
   "Durga Puja 2026 Rajeev Nagar",
+  "Rudrabhishek Patna",
+  "Rudrabhishek booking Rajeev Nagar",
+  "Satyanarayan puja Patna",
+  "Mundan temple Patna",
+  "Kundli milan Patna",
+  "Temple in Rajeev Nagar Patna",
+  "Shiv temple Patna",
 ];
 
 export const ALT_NAMES = [

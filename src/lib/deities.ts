@@ -9,6 +9,7 @@ export type Deity = {
   about: string;
   days: string;
   offerings: string;
+  en: string; // English name for search and display
   image: string; // 4:3 crop used on cards
   detail?: { src: string; width: number; height: number }; // full photo for the darshan page, if different
   festival?: boolean;
@@ -17,6 +18,7 @@ export type Deity = {
 
 const DURGA_PUJA: Deity = {
   slug: "durga-puja-2026",
+  en: "Durga Puja 2026 Pandal Darshan",
   name: "दुर्गा पूजा 2026",
   short: "दुर्गा पूजा 2026",
   role: "शारदीय नवरात्रि · पंडाल दर्शन",
@@ -35,6 +37,7 @@ export const DEITIES: Deity[] = [
   ...(ABHIYAN.active ? [DURGA_PUJA] : []),
   {
     slug: "shivling",
+    en: "Shri Shanteshwar Mahadev (Shivling)",
     name: "श्री शान्तेश्वर महादेव",
     short: "शिवलिंग",
     role: "प्रधान देव",
@@ -47,6 +50,7 @@ export const DEITIES: Deity[] = [
   },
   {
     slug: "durga",
+    en: "Maa Durga",
     name: "माँ दुर्गा",
     short: "माँ दुर्गा",
     role: "आदिशक्ति",
@@ -59,6 +63,7 @@ export const DEITIES: Deity[] = [
   },
   {
     slug: "hanuman",
+    en: "Shri Hanuman Ji",
     name: "श्री हनुमान जी",
     short: "हनुमान जी",
     role: "संकटमोचन",
@@ -71,6 +76,7 @@ export const DEITIES: Deity[] = [
   },
   {
     slug: "lakshmi-narayan",
+    en: "Shri Lakshmi Narayan with Bal Gopal",
     name: "श्री लक्ष्मी-नारायण",
     short: "लक्ष्मी-नारायण",
     role: "श्री हरि एवं माँ लक्ष्मी · बाल गोपाल सहित",
@@ -84,6 +90,7 @@ export const DEITIES: Deity[] = [
   },
   {
     slug: "suryadev",
+    en: "Shri Surya Dev",
     name: "श्री सूर्यदेव",
     short: "सूर्यदेव",
     role: "प्रत्यक्ष देव",
@@ -96,6 +103,7 @@ export const DEITIES: Deity[] = [
   },
   {
     slug: "sapta-pindi",
+    en: "Sapta Pindi (Seven Mother Goddesses)",
     name: "सप्त पिंडी",
     short: "सप्त पिंडी",
     role: "मातृशक्ति",

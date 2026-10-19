@@ -21,12 +21,13 @@
   --radius-arch: 999px 999px 1.25rem 1.25rem;
 }
 
-/* Base text is 18px; the "अक्षर" control in the header raises it to 20px or 22px. */
+/* Base text: 17px on phones, 18px from tablets up. The "अ+ / अ++" control raises it for anyone who needs it. */
 html {
-  font-size: 112.5%;
+  font-size: 106.25%;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
+@media (min-width: 768px) { html { font-size: 112.5%; } }
 html[data-size="lg"] { font-size: 125%; }
 html[data-size="xl"] { font-size: 137.5%; }
 

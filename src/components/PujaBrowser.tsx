@@ -14,7 +14,8 @@ export function PujaBrowser() {
 
   const groups = useMemo(() => {
     const term = q.trim();
-    const match = (p: Puja) => !term || [p.name, p.about, ...(p.options ?? [])].join(" ").includes(term);
+    const t = term.toLowerCase();
+    const match = (p: Puja) => !t || [p.name, p.en, p.alias ?? "", p.about, ...(p.options ?? [])].join(" ").toLowerCase().includes(t);
     return CATEGORIES.filter((c) => cat === "all" || c.id === cat)
       .map((c) => ({ c, items: PUJAS.filter((p) => p.cat === c.id && match(p)) }))
       .filter((g) => g.items.length);
@@ -39,7 +40,7 @@ export function PujaBrowser() {
               type="search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="पूजा का नाम लिखें, जैसे रुद्राभिषेक"
+              placeholder="पूजा खोजें: रुद्राभिषेक / Rudrabhishek"
               className="w-full h-13 pl-12 pr-4 rounded-xl border-2 border-line bg-card text-[1.05rem] focus:border-maroon outline-none"
             />
           </label>
@@ -62,7 +63,7 @@ export function PujaBrowser() {
         </div>
       </div>
 
-      <div className="wrap py-8 grid gap-10">
+      <div className="wrap py-5 md:py-8 grid gap-8 md:gap-10">
         {groups.length === 0 && (
           <p className="p-8 text-center bg-card rounded-2xl border border-dashed border-line text-ink-soft">
             “{q}” नाम की कोई पूजा नहीं मिली। दूसरा शब्द लिखकर देखें, या मंदिर कार्यालय से पूछें।
@@ -78,10 +79,12 @@ export function PujaBrowser() {
               {items.map((p) => (
                 <li
                   key={p.name}
-                  className="bg-card rounded-xl border border-line p-4 md:p-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center"
+                  className="bg-card rounded-xl border border-line p-3.5 md:p-5 grid gap-2.5 md:gap-3 md:grid-cols-[1fr_auto] md:items-center"
                 >
                   <div className="grid gap-1 min-w-0">
-                    <h3 className="text-[1.35rem]">{p.name}</h3>
+                    <h3 className="text-[1.3rem] md:text-[1.35rem] leading-snug">
+                      {p.name} <span lang="en" className="block font-sans text-[0.88rem] text-ink-soft font-medium">{p.en}</span>
+                    </h3>
                     <p className="text-ink-soft">{p.about}</p>
                     {(p.options || p.duration) && (
                       <div className="flex flex-wrap gap-2 mt-1">

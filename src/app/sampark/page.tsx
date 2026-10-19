@@ -24,7 +24,7 @@ export default function SamparkPage() {
   return (
     <>
       <JsonLd data={[breadcrumbs([{ name: "समय एवं संपर्क", path: "/sampark" }]), faqSchema(FAQS)]} />
-      <PageHeading eyebrow="पता, समय और संपर्क" title="मंदिर आएँ" lead="रोड नं. 24, राजीव नगर में सीढ़ियों वाला सफ़ेद मंदिर, ऊपर तीन शिखर और लाल अक्षरों में नाम।" />
+      <PageHeading eyebrow="पता, समय और संपर्क" title="मंदिर आएँ" en="Address, aarti timings and contact · Shiv Mandir Road No. 24, Rajeev Nagar, Patna" lead="रोड नं. 24, राजीव नगर में सीढ़ियों वाला सफ़ेद मंदिर, ऊपर तीन शिखर और लाल अक्षरों में नाम।" />
 
       <div className="wrap py-10 grid gap-14">
         <section className="grid lg:grid-cols-[1fr_1.2fr] gap-6 items-start" aria-label="पता और संपर्क">

@@ -14,7 +14,7 @@ import { JsonLd } from "@/components/JsonLd";
 
 export const metadata: Metadata = pageMeta({
   title: "मंदिर परिवार के सदस्य बनें · शिव मंदिर रोड नं. 24, राजीव नगर",
-  description: `सहयोग भाव से शान्तेश्वर शिवलोक मंदिर (रोड नं. 24, राजीव नगर, पटना) के सदस्य बनें। वार्षिक सहयोग ${rupees(MEMBERSHIP.fee)}। मंदिर समिति और सदस्यों की सूची।`,
+  description: `सहयोग भाव से शान्तेश्वर शिवलोक मंदिर (रोड नं. 24, राजीव नगर, पटना) के सदस्य बनें। वार्षिक सहयोग ${rupees(MEMBERSHIP.fee)} — मंदिर समिति और सदस्यों की सूची।`,
   path: "/sadasya",
   image: "/og/home.jpg",
   imageAlt: "शान्तेश्वर शिवलोक मंदिर परिवार",
@@ -27,14 +27,15 @@ export default function SadasyaPage() {
       <PageHeading
         eyebrow="मंदिर परिवार"
         title="सहयोग भाव से आइए, सदस्य बनिए"
+        en="Become a member of Shanteshwar Shivlok Mandir, Road No. 24, Rajeev Nagar"
         lead="भोलेनाथ की सेवा में मोहल्ले के सभी श्रद्धालुओं का स्वागत है। सदस्यों के सहयोग से ही मंदिर की नित्य पूजा, पर्व और रख-रखाव चलता है।"
       />
       <div className="wrap py-10 grid gap-14">
         <section className="grid lg:grid-cols-[1fr_20rem] gap-8 items-start" aria-label="सदस्यता फ़ॉर्म">
-          <div className="bg-card rounded-2xl border border-line p-5 md:p-8 grid gap-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-4">
-              <h2 className="text-[1.6rem]">सदस्यता {MEMBERSHIP.year}</h2>
-              <p className="text-[1.15rem]"><span className="font-bold tabular-nums">{rupees(MEMBERSHIP.fee)}</span> <span className="text-ink-soft">प्रति वर्ष</span></p>
+          <div className="grid gap-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 px-1">
+              <h2 className="text-[1.5rem]">सदस्यता {MEMBERSHIP.year}</h2>
+              <p className="text-[1.12rem]"><span className="font-bold tabular-nums">{rupees(MEMBERSHIP.fee)}</span> <span className="text-ink-soft">प्रति वर्ष</span></p>
             </div>
             <MembershipClient />
           </div>

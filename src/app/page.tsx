@@ -38,8 +38,8 @@ export default function Home() {
           <div className="md:order-1 grid gap-4 pb-9 md:pb-0">
             <span className="font-display text-maroon text-[1.15rem]">ॐ नमः शिवाय</span>
             <h1 className="leading-[1.15]">
-              <span className="block text-gold text-[1.3rem] md:text-[1.5rem] mb-1">श्री श्री</span>
-              <span className="block text-[2.3rem] sm:text-[2.6rem] lg:text-[3.2rem]">शान्तेश्वर शिवलोक मंदिर</span>
+              <span className="block text-gold text-[1.15rem] md:text-[1.5rem] mb-0.5">श्री श्री</span>
+              <span className="block text-[2rem] sm:text-[2.5rem] lg:text-[3.2rem]">शान्तेश्वर शिवलोक मंदिर</span>
             </h1>
             <div aria-hidden="true" className="flex items-center gap-2 text-gold">
               <span className="h-px w-10 bg-gold/70" />
@@ -64,7 +64,7 @@ export default function Home() {
 
       <TodayStrip />
 
-      <section className="wrap mt-12" aria-label="मंदिर का परिचय">
+      <section className="wrap mt-8 md:mt-12" aria-label="मंदिर का परिचय">
         <p className="max-w-[68ch] text-[1.12rem] leading-relaxed">
           <strong className="font-semibold">{MANDIR.name}</strong> पटना के राजीव नगर में <strong className="font-semibold">रोड नं. 24</strong> पर स्थित शिव मंदिर है।
           मोहल्ले में इसे “रोड नं. 24 वाला शिव मंदिर” या “राजीव नगर का शिव मंदिर” के नाम से जाना जाता है। प्रधान देव श्री शान्तेश्वर महादेव के साथ यहाँ माँ दुर्गा, हनुमान जी,
@@ -73,13 +73,13 @@ export default function Home() {
       </section>
 
       {/* Membership invite */}
-      <section className="wrap mt-12" aria-labelledby="sadasya-title">
-        <div className="rounded-2xl border-2 border-gold/50 bg-[linear-gradient(135deg,#fff,#fdf1df)] p-7 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+      <section className="wrap mt-8 md:mt-12" aria-labelledby="sadasya-title">
+        <div className="rounded-2xl border-2 border-gold/50 bg-[linear-gradient(135deg,#fff,#fdf1df)] p-5 md:p-10 grid md:grid-cols-[1fr_auto] gap-5 md:gap-6 items-center">
           <div className="grid gap-2 max-w-[60ch]">
             <span className="eyebrow">मंदिर परिवार</span>
-            <h2 id="sadasya-title" className="text-[1.9rem] md:text-[2.2rem]">सहयोग भाव से आइए, सदस्य बनिए</h2>
+            <h2 id="sadasya-title" className="text-[1.6rem] md:text-[2.2rem]">सहयोग भाव से आइए, सदस्य बनिए</h2>
             <p className="text-ink-soft text-[1.08rem]">
-              मंदिर की नित्य पूजा, पर्व और रख-रखाव सदस्यों के सहयोग से चलता है। वार्षिक सहयोग {rupees(MEMBERSHIP.fee)}।
+              मंदिर की नित्य पूजा, पर्व और रख-रखाव सदस्यों के सहयोग से चलता है। वार्षिक सहयोग: <strong className="text-ink tabular-nums">{rupees(MEMBERSHIP.fee)}</strong>
             </p>
           </div>
           <Link href="/sadasya" className="btn btn-primary min-h-14 text-[1.1rem]">सदस्य बनें <ArrowRight /></Link>
@@ -87,7 +87,7 @@ export default function Home() {
       </section>
 
       {ABHIYAN.active && (
-        <section className="wrap mt-14" aria-labelledby="abhiyan-title">
+        <section className="wrap mt-10 md:mt-14" aria-labelledby="abhiyan-title">
           <div className="grid md:grid-cols-[1.3fr_1fr] rounded-2xl overflow-hidden border-2 border-gold/60 bg-card shadow-[0_12px_32px_rgba(142,27,27,0.10)]">
             <div className="relative aspect-[8/5] md:aspect-auto md:min-h-[22rem]">
               <Image
@@ -98,7 +98,7 @@ export default function Home() {
                 className="object-cover object-center"
               />
             </div>
-            <div className="p-6 md:p-9 grid gap-4 content-center bg-[linear-gradient(135deg,#fff,#fdf1df)]">
+            <div className="p-5 md:p-9 grid gap-3 md:gap-4 content-center bg-[linear-gradient(135deg,#fff,#fdf1df)]">
               <span className="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-maroon text-white text-[0.9rem] font-semibold">
                 <span className="w-2 h-2 rounded-full bg-saffron animate-pulse" aria-hidden="true" /> अभी चल रहा है
               </span>
@@ -118,9 +118,9 @@ export default function Home() {
       )}
 
       {/* Darshan */}
-      <section className="wrap mt-16" aria-labelledby="darshan-title">
+      <section className="wrap mt-10 md:mt-16" aria-labelledby="darshan-title">
         <SectionTitle id="darshan-title" eyebrow="गर्भगृह" title="देवी-देवताओं के दर्शन" lead="किसी भी देवता पर दबाएँ, बड़ा चित्र, मंत्र और जानकारी खुलेगी।" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
           {DEITIES.filter((d) => !d.festival).map((d, i) => (
             <DeityCard key={d.slug} d={d} priority={i < 3} />
           ))}
@@ -128,18 +128,18 @@ export default function Home() {
       </section>
 
       {/* Puja */}
-      <section className="mt-16 bg-card border-y border-line" aria-labelledby="puja-title">
-        <div className="wrap py-12 grid md:grid-cols-[1fr_1.3fr] gap-8 items-start">
+      <section className="mt-10 md:mt-16 bg-card border-y border-line" aria-labelledby="puja-title">
+        <div className="wrap py-8 md:py-12 grid md:grid-cols-[1fr_1.3fr] gap-6 md:gap-8 items-start">
           <div>
             <SectionTitle id="puja-title" eyebrow="पूजा-पाठ" title="मंदिर में होने वाली पूजा" lead={`रुद्राभिषेक से लेकर वाहन-पूजा और कुण्डली तक, ${PUJAS.length} प्रकार की पूजा मंदिर के आचार्य कराते हैं।`} />
             <Link href="/puja" className="btn btn-primary">सभी पूजा देखें <ArrowRight /></Link>
           </div>
-          <ul className="grid sm:grid-cols-2 gap-3">
+          <ul className="grid grid-cols-2 gap-2.5 md:gap-3">
             {CATEGORIES.map((c) => (
               <li key={c.id}>
-                <Link href="/puja" className="grid gap-1 h-full p-5 rounded-xl border-2 border-line hover:border-gold bg-paper no-underline text-ink transition-colors">
-                  <span className="font-display text-[1.3rem]">{c.name}</span>
-                  <span className="text-ink-soft text-[0.95rem]">{c.blurb}</span>
+                <Link href="/puja" className="grid gap-1 h-full p-3.5 md:p-5 rounded-xl border-2 border-line hover:border-gold bg-paper no-underline text-ink transition-colors">
+                  <span className="font-display text-[1.12rem] md:text-[1.3rem] leading-snug">{c.name}</span>
+                  <span className="text-ink-soft text-[0.88rem] md:text-[0.95rem]">{c.blurb}</span>
                 </Link>
               </li>
             ))}
@@ -148,13 +148,13 @@ export default function Home() {
       </section>
 
       {/* Timings */}
-      <section className="wrap mt-16" aria-labelledby="samay-title">
+      <section className="wrap mt-10 md:mt-16" aria-labelledby="samay-title">
         <SectionTitle id="samay-title" eyebrow="आरती एवं दर्शन" title="मंदिर का समय" lead="गर्मी और सर्दी में समय अलग रहता है।" />
         <SamayTable />
       </section>
 
       {/* Gallery */}
-      <section className="wrap mt-16" aria-labelledby="jhalak-title">
+      <section className="wrap mt-10 md:mt-16" aria-labelledby="jhalak-title">
         <SectionTitle id="jhalak-title" eyebrow="मंदिर परिसर" title="मंदिर की झलक" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {JHALAK.map((j) => (
@@ -169,14 +169,14 @@ export default function Home() {
       </section>
 
       {/* Festivals */}
-      <section className="wrap mt-16" aria-labelledby="parv-title">
+      <section className="wrap mt-10 md:mt-16" aria-labelledby="parv-title">
         <SectionTitle id="parv-title" eyebrow="वार्षिक उत्सव" title="मंदिर के प्रमुख पर्व" lead="हिंदू पंचांग के मास के अनुसार। हर वर्ष की तिथि पंचांग से घोषित होती है।" />
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-6 border-t-2 border-gold/50">
+        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-6 border-t-2 border-gold/50">
           {PARV.map((p) => (
-            <li key={p.name} className="py-5 border-b border-line grid gap-1 content-start">
+            <li key={p.name} className="py-4 md:py-5 border-b border-line grid gap-1 content-start">
               <span className="text-maroon font-semibold text-[0.95rem]">{p.masa}</span>
-              <h3 className="text-[1.35rem]">{p.name}</h3>
-              <p className="text-ink-soft text-[0.98rem]">{p.about}</p>
+              <h3 className="text-[1.12rem] md:text-[1.35rem] leading-snug">{p.name}</h3>
+              <p className="text-ink-soft text-[0.9rem] md:text-[0.98rem]">{p.about}</p>
             </li>
           ))}
         </ul>
@@ -184,7 +184,7 @@ export default function Home() {
 
       {/* Visit */}
       <section className="wrap mt-16 mb-6" aria-labelledby="visit-title">
-        <div className="rounded-2xl bg-maroon text-white p-7 md:p-10 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+        <div className="rounded-2xl bg-maroon text-white p-5 md:p-10 grid md:grid-cols-[1fr_auto] gap-5 md:gap-6 items-center">
           <div className="grid gap-2">
             <h2 id="visit-title" className="text-[1.9rem]">मंदिर कैसे पहुँचें</h2>
             <p className="text-[1.1rem] text-white/90">{MANDIR.addressPlain}</p>
